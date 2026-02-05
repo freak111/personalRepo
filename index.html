@@ -1,142 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>For My Love ❤️</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #cbb4e3, #f3c6d3);
-      font-family: Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Love Vouchers</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #ffb703;
+            --pink: #ff2d55;
+            --bg: #0f0f12;
+        }
 
-    .card {
-      width: 900px;
-      height: 520px;
-      display: flex;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      background: #000;
-    }
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-    .image-section {
-      width: 50%;
-      position: relative;
-    }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff2d55, #ffb703);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
 
-    .image-section img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: opacity 0.5s ease;
-    }
+        .subtitle {
+            color: #888;
+            margin-bottom: 40px;
+            text-align: center;
+        }
 
-    .content-section {
-      width: 50%;
-      padding: 40px;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+        /* The Coupon Container */
+        .coupon {
+            width: 100%;
+            max-width: 450px;
+            height: 200px;
+            background: #1a1a1f;
+            border: 2px dashed #333;
+            border-radius: 20px;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
 
-    h2 {
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
+        .coupon:hover {
+            transform: scale(1.02) rotate(1deg);
+            box-shadow: 0 0 30px rgba(255, 45, 85, 0.2);
+            border-color: var(--pink);
+        }
 
-    p {
-      opacity: 0.85;
-      margin-bottom: 25px;
-      line-height: 1.6;
-    }
+        /* Left Side - Icon Area */
+        .coupon-left {
+            width: 30%;
+            background: linear-gradient(135deg, var(--pink), #b5179e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: white;
+        }
 
-    .btns {
-      display: flex;
-      gap: 10px;
-    }
+        /* Right Side - Content Area */
+        .coupon-right {
+            width: 70%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
 
-    button {
-      padding: 10px 18px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      background: #28a745;
-      color: white;
-      font-size: 14px;
-    }
+        .coupon-right h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-    button:hover {ss
-      opacity: 0.85;
-    }
-  </style>
+        .coupon-right p {
+            margin: 5px 0;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .details {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #333;
+            padding-top: 10px;
+        }
+
+        .detail-item {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .detail-item span {
+            display: block;
+            color: var(--gold);
+            font-size: 0.85rem;
+        }
+
+        /* Circular cutouts for the "ticket" look */
+        .coupon::before, .coupon::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--bg);
+            border-radius: 50%;
+            left: 30%;
+            margin-left: -15px;
+            z-index: 2;
+        }
+
+        .coupon::before { top: -15px; }
+        .coupon::after { bottom: -15px; }
+
+        .btn-print {
+            margin-top: 20px;
+            background: none;
+            border: 1px solid #444;
+            color: #888;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-print:hover {
+            background: white;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
-<div class="card">
-  <!-- IMAGE -->
-  <div class="image-section">
-    <img id="mainImage" src="asset/beautiful.png" />
-  </div>
+    <h1>Exclusive Rewards</h1>
+    <p class="subtitle">Valid for one very special person. Unlimited redemption.</p>
 
-  <!-- CONTENT -->
-  <div class="content-section">
-    <h2 id="title">Beautiful 💖</h2>
-    <p id="text">
-      You walked into my life quietly,  
-      but you became my favorite noise.
-    </p>
-
-    <div class="btns">
-      <button onclick="changeContent(0)">Beautiful</button>
-      <button onclick="changeContent(1)">Cute</button>
-      <button onclick="changeContent(2)">Cultured</button>
-      <button onclick="changeContent(3)">Love❤️</button>
+    <div class="coupon">
+        <div class="coupon-left">
+            <i class="fas fa-kiss-wink-heart"></i>
+        </div>
+        <div class="coupon-right">
+            <h2>Unlimited Kisses</h2>
+            <p>Good for any time, anywhere. No mood too sour, no day too long.</p>
+            
+            <div class="details">
+                <div class="detail-item">
+                    Expires
+                    <span>FOREVER</span>
+                </div>
+                <div class="detail-item" style="text-align: right;">
+                    Uses
+                    <span>UNLIMITED</span>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-  const data = [
-    {
-      title: "Beautiful 💖",
-      text: "You walked into my life quietly, but you became my favorite noise.",
-      img: "asset/beautiful.png"
-    },
-    {
-      title: "Cute 😘",
-      text: "Your smile has the power to fix my worst days instantly.",
-      img: "asset/cute.jpg"
-    },
-    {
-      title: "Cultured 💕",
-      text: "Distance only taught me how deeply I love you.",
-      img: "asset/cultured.jpg"
-    },
-    {
-      title: "Love❤️",
-      text: "No matter where life takes us, my heart chooses you. Always.",
-      img: "asset/love.png"
-    }
-  ];
+    <div class="coupon">
+        <div class="coupon-left" style="background: linear-gradient(135deg, #4361ee, #4cc9f0);">
+            <i class="fas fa-hand-holding-heart"></i>
+        </div>
+        <div class="coupon-right">
+            <h2>Warmest Hugs</h2>
+            <p>Redeemable for maximum comfort and 100% stress relief.</p>
+            
+            <div class="details">
+                <div class="detail-item">
+                    Expires
+                    <span>NEVER</span>
+                </div>
+                <div class="detail-item" style="text-align: right;">
+                    Uses
+                    <span>∞ INFITY</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  function changeContent(index) {
-    const img = document.getElementById("mainImage");
-    img.style.opacity = 0;
-
-    setTimeout(() => {
-      document.getElementById("title").innerText = data[index].title;
-      document.getElementById("text").innerText = data[index].text;
-      img.src = data[index].img;
-      img.style.opacity = 1;
-    }, 300);
-  }
-</script>
+    <button class="btn-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Voucher Book
+    </button>
 
 </body>
 </html>
