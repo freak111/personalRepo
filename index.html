@@ -3,204 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chocolate Day | Sweet Surprises</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+    <title>Stardust Teddy | 2026 Innovation</title>
     <style>
         :root {
-            --cocoa: #3d1c02;
-            --milk-choc: #7f4f24;
-            --caramel: #dda15e;
-            --gold: #d4af37;
+            --space: #050505;
+            --star: #fff;
+            --nebula: #ff4d6d;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background: radial-gradient(circle at center, #2c1708 0%, #000000 100%);
-            color: white;
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background: var(--space);
+            overflow: hidden;
             font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        /* Chocolate Rain Animation */
-        .choco-drop {
-            position: fixed;
-            top: -50px;
-            font-size: 24px;
-            z-index: 0;
-            animation: fall linear forwards;
+        /* The walking Teddy (Star-made) */
+        #constellation-teddy {
+            position: absolute;
+            bottom: 30%;
+            left: -150px;
+            font-size: 120px;
+            filter: drop-shadow(0 0 20px var(--nebula));
+            z-index: 10;
+            animation: star-walk 8s linear forwards;
+            user-select: none;
         }
 
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
+        @keyframes star-walk {
+            0% { left: -150px; transform: rotate(-10deg); }
+            20% { transform: rotate(10deg); }
+            40% { transform: rotate(-10deg); }
+            60% { transform: rotate(10deg); }
+            80% { left: 50%; transform: translateX(-50%) rotate(-10deg); opacity: 1; }
+            100% { left: 50%; transform: translateX(-50%) scale(0); opacity: 0; }
         }
 
-        header {
+        /* The Rhyme revealed by stars */
+        .star-rhyme {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            padding: 50px 20px;
-            z-index: 1;
+            width: 90%;
+            opacity: 0;
+            transition: opacity 2s ease;
+            z-index: 5;
         }
 
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            color: var(--caramel);
-            text-shadow: 0 0 15px rgba(221, 161, 94, 0.5);
-        }
-
-        .rhyme {
-            font-style: italic;
-            font-size: 1.2rem;
-            color: #bfa89e;
-            margin-top: 10px;
-        }
-
-        /* The Box */
-        .box-container {
-            position: relative;
-            background: var(--cocoa);
-            width: 340px;
-            padding: 25px;
-            border-radius: 20px;
-            border: 4px solid var(--gold);
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-            z-index: 1;
-            margin-bottom: 50px;
-        }
-
-        /* The Chocolates */
-        .chocolate {
-            width: 120px;
-            height: 120px;
-            background: var(--milk-choc);
-            border-radius: 15px;
-            cursor: pointer;
-            position: relative;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.5), 5px 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .chocolate:hover {
-            transform: scale(1.05) translateY(-5px);
-            background: var(--caramel);
-        }
-
-        /* Unwrapping Effect */
-        .chocolate.eaten {
-            background: #222 !important;
-            box-shadow: inset 0 0 20px black;
-            transform: scale(0.9);
-            pointer-events: none;
-        }
-
-        .chocolate.eaten::after {
-            content: '❤️';
-            font-size: 1.5rem;
-        }
-
-        /* Reveal Message */
-        #message-display {
-            height: 60px;
+        .star-rhyme h1 {
+            font-size: 3rem;
+            background: linear-gradient(to bottom, #fff, var(--nebula));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
-            font-size: 1.3rem;
-            color: var(--gold);
-            font-weight: 600;
+        }
+
+        .star-rhyme p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.5rem;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        /* Canvas for the particle system */
+        #canvas {
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
             text-align: center;
-            max-width: 300px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
         }
-
-        .footer-nav {
-            z-index: 1;
-            margin-bottom: 40px;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            background: var(--gold);
-            color: var(--cocoa);
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .btn:hover { background: white; transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Happy Chocolate Day</h1>
-        <p class="rhyme">"Life is like a box of chocolates... <br> but you're the sweetest one in it."</p>
-    </header>
+    <canvas id="canvas"></canvas>
+    
+    <div id="constellation-teddy">🧸</div>
 
-    <div id="message-display">Click a chocolate to taste a secret...</div>
-
-    <div class="box-container">
-        <div class="chocolate" onclick="eat(this, 'You are my Dark Delight!')">🍫</div>
-        <div class="chocolate" onclick="eat(this, 'Sweetness overloaded!')">🍬</div>
-        <div class="chocolate" onclick="eat(this, 'My favorite Caramel!')">🍩</div>
-        <div class="chocolate" onclick="eat(this, 'Forever my Sweetheart!')">🍪</div>
+    <div class="star-rhyme" id="rhyme">
+        <h1> Happy Teddy day</h1>
+        <p>
+            This Teddy Day, no gift to send,<br>
+            ’Cause I’m your teddy, lover, friend. <br>
+            When nights feel long or days feel blue, <br>
+            My arms are always here for you. <br>
+            Hold me close, don’t feel afraid, <br>
+            I’m the warmth that never fades. <br>
+        </p>
     </div>
 
-    <div class="footer-nav">
-        <a href="#" class="btn" onclick="location.reload()">Refill the Box</a>
-    </div>
+    <div class="hint">The stars are moving for you...</div>
 
     <script>
-        // Interactive "Eating" Function
-        function eat(element, msg) {
-            element.classList.add('eaten');
-            element.innerHTML = "";
-            document.getElementById('message-display').innerText = msg;
-            
-            // Trigger a mini heart burst on click
-            for(let i=0; i<5; i++) {
-                createParticle(element.offsetLeft + 60, element.offsetTop + 60);
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const mouse = { x: null, y: null };
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+            }
+            draw() {
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    this.x -= dx / 10;
+                    this.y -= dy / 10;
+                    ctx.strokeStyle = 'rgba(255, 77, 109, 0.2)';
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 20;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 20;
+                    }
+                }
             }
         }
 
-        // Chocolate Rain
-        function createChoco() {
-            const icons = ['🍫', '🍩', '🍪', '🍬', '✨'];
-            const drop = document.createElement('div');
-            drop.classList.add('choco-drop');
-            drop.innerText = icons[Math.floor(Math.random() * icons.length)];
-            drop.style.left = Math.random() * 100 + "vw";
-            drop.style.animationDuration = Math.random() * 3 + 2 + "s";
-            drop.style.opacity = Math.random();
-            document.body.appendChild(drop);
-            setTimeout(() => drop.remove(), 5000);
+        for (let i = 0; i < 150; i++) {
+            particles.push(new Particle());
         }
-        setInterval(createChoco, 400);
 
-        function createParticle(x, y) {
-            const p = document.createElement('div');
-            p.innerText = "❤️";
-            p.style.position = "fixed";
-            p.style.left = x + "px";
-            p.style.top = y + "px";
-            p.style.pointerEvents = "none";
-            p.style.transition = "all 1s ease";
-            document.body.appendChild(p);
-            setTimeout(() => {
-                p.style.transform = `translate(${(Math.random()-0.5)*100}px, ${(Math.random()-0.5)*100}px) scale(0)`;
-                p.style.opacity = "0";
-            }, 10);
-            setTimeout(() => p.remove(), 1000);
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].draw();
+                particles[i].update();
+            }
+            requestAnimationFrame(animate);
         }
+        animate();
+
+        // Reveal Rhyme after Teddy "dissolves"
+        setTimeout(() => {
+            document.getElementById('rhyme').style.opacity = '1';
+        }, 7500);
     </script>
 </body>
 </html>
