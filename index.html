@@ -3,187 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stardust Teddy | 2026 Innovation</title>
+    <title>Promise Day 2026 | Secure Vow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --space: #050505;
-            --star: #fff;
-            --nebula: #ff4d6d;
+            --neon-blue: #00f2ff;
+            --promise-pink: #ff2d55;
+            --bg: #050505;
         }
 
         body, html {
             margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background: var(--space);
-            overflow: hidden;
+            height: 100%; width: 100%;
+            background: var(--bg);
+            color: white;
             font-family: 'Outfit', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
         }
 
-        /* The walking Teddy (Star-made) */
-        #constellation-teddy {
-            position: absolute;
-            bottom: 30%;
-            left: -150px;
-            font-size: 120px;
-            filter: drop-shadow(0 0 20px var(--nebula));
-            z-index: 10;
-            animation: star-walk 8s linear forwards;
-            user-select: none;
-        }
-
-        @keyframes star-walk {
-            0% { left: -150px; transform: rotate(-10deg); }
-            20% { transform: rotate(10deg); }
-            40% { transform: rotate(-10deg); }
-            60% { transform: rotate(10deg); }
-            80% { left: 50%; transform: translateX(-50%) rotate(-10deg); opacity: 1; }
-            100% { left: 50%; transform: translateX(-50%) scale(0); opacity: 0; }
-        }
-
-        /* The Rhyme revealed by stars */
-        .star-rhyme {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+        /* Scanner Visuals */
+        .scanner-container {
             text-align: center;
-            width: 90%;
-            opacity: 0;
-            transition: opacity 2s ease;
-            z-index: 5;
+            transition: opacity 0.8s ease;
         }
 
-        .star-rhyme h1 {
+        .fingerprint-scanner {
+            width: 120px;
+            height: 120px;
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            margin: 0 auto 30px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            transition: 0.3s;
+        }
+
+        .fingerprint-scanner i {
             font-size: 3rem;
-            background: linear-gradient(to bottom, #fff, var(--nebula));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            color: var(--neon-blue);
+            transition: 0.3s;
         }
 
-        .star-rhyme p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.5rem;
-            line-height: 1.8;
-            letter-spacing: 1px;
-            font-style: italic;
-        }
-
-        /* Canvas for the particle system */
-        #canvas {
+        /* The Scan Line */
+        .scan-line {
             position: absolute;
-            top: 0; left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-blue);
+            top: 0;
+            left: 0;
+            box-shadow: 0 0 15px var(--neon-blue);
+            display: none;
+            animation: scanning 2s linear infinite;
         }
 
-        .hint {
-            position: fixed;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            color: rgba(255,255,255,0.3);
+        @keyframes scanning {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        .instruction {
+            letter-spacing: 3px;
             text-transform: uppercase;
             font-size: 0.8rem;
-            letter-spacing: 3px;
+            color: var(--neon-blue);
+            margin-top: 15px;
         }
+
+        /* The Hidden Promise */
+        #promise-reveal {
+            position: absolute;
+            text-align: center;
+            opacity: 0;
+            display: none;
+            max-width: 500px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+        }
+
+        .vow-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--promise-pink);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .certificate-tag {
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 2px;
+            margin-top: 30px;
+            border-top: 1px solid #222;
+            padding-top: 15px;
+        }
+
+        /* Holding state */
+        .holding { transform: scale(0.95); box-shadow: 0 0 50px var(--neon-blue) !important; }
+
     </style>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
-    
-    <div id="constellation-teddy">🧸</div>
-
-    <div class="star-rhyme" id="rhyme">
-        <h1> Happy Teddy day</h1>
-        <p>
-            This Teddy Day, no gift to send,<br>
-            ’Cause I’m your teddy, lover, friend. <br>
-            When nights feel long or days feel blue, <br>
-            My arms are always here for you. <br>
-            Hold me close, don’t feel afraid, <br>
-            I’m the warmth that never fades. <br>
-        </p>
+    <div class="scanner-container" id="stage1">
+        <div class="fingerprint-scanner" id="scanner" onmousedown="startScan()" onmouseup="stopScan()" ontouchstart="startScan()" ontouchend="stopScan()">
+            <div class="scan-line" id="line"></div>
+            <span style="font-size: 3rem;">👆</span>
+        </div>
+        <div class="instruction" id="hint">Hold to verify promise</div>
     </div>
 
-    <div class="hint">The stars are moving for you...</div>
+    <div id="promise-reveal">
+        <div class="vow-text" id="vow">
+            "I promise to be your home,<br>
+            your anchor, and your peace.<br>
+            A love that only grows,<br>
+            and vows that never cease."
+        </div>
+        <p style="color: #aaa;">Happy Promise Day. This vow is encrypted in my heart forever.</p>
+        <div class="certificate-tag">
+            VOW ID: 2026-LOVE-PROMISE<br>
+            STATUS: PERMANENTLY SIGNED
+        </div>
+    </div>
 
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const mouse = { x: null, y: null };
+        let scanTimer;
+        const scanner = document.getElementById('scanner');
+        const line = document.getElementById('line');
+        const stage1 = document.getElementById('stage1');
+        const stage2 = document.getElementById('promise-reveal');
 
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function startScan() {
+            scanner.classList.add('holding');
+            line.style.display = 'block';
+            document.getElementById('hint').innerText = "Authenticating Heartbeat...";
+            
+            scanTimer = setTimeout(() => {
+                revealPromise();
+            }, 2500); // 2.5 seconds hold required
         }
 
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 30) + 1;
-            }
-            draw() {
-                ctx.fillStyle = 'white';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-            update() {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 100) {
-                    this.x -= dx / 10;
-                    this.y -= dy / 10;
-                    ctx.strokeStyle = 'rgba(255, 77, 109, 0.2)';
-                    ctx.beginPath();
-                    ctx.moveTo(this.x, this.y);
-                    ctx.lineTo(mouse.x, mouse.y);
-                    ctx.stroke();
-                } else {
-                    if (this.x !== this.baseX) {
-                        let dx = this.x - this.baseX;
-                        this.x -= dx / 20;
-                    }
-                    if (this.y !== this.baseY) {
-                        let dy = this.y - this.baseY;
-                        this.y -= dy / 20;
-                    }
-                }
+        function stopScan() {
+            if (stage2.style.display !== 'block') {
+                scanner.classList.remove('holding');
+                line.style.display = 'none';
+                document.getElementById('hint').innerText = "Hold to verify promise";
+                clearTimeout(scanTimer);
             }
         }
 
-        for (let i = 0; i < 150; i++) {
-            particles.push(new Particle());
+        function revealPromise() {
+            stage1.style.opacity = '0';
+            setTimeout(() => {
+                stage1.style.display = 'none';
+                stage2.style.display = 'block';
+                setTimeout(() => {
+                    stage2.style.opacity = '1';
+                    // Trigger a small haptic-style shake or sound here if desired
+                }, 50);
+            }, 800);
         }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].draw();
-                particles[i].update();
-            }
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Reveal Rhyme after Teddy "dissolves"
-        setTimeout(() => {
-            document.getElementById('rhyme').style.opacity = '1';
-        }, 7500);
     </script>
 </body>
 </html>
