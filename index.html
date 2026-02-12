@@ -3,172 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promise Day 2026 | Secure Vow</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <title>Hug Day 2026 | The Embrace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-blue: #00f2ff;
-            --promise-pink: #ff2d55;
-            --bg: #050505;
+            --warm-glow: #ff8e72;
+            --bg-dark: #0f0c29;
         }
 
         body, html {
             margin: 0; padding: 0;
             height: 100%; width: 100%;
-            background: var(--bg);
-            color: white;
-            font-family: 'Outfit', sans-serif;
-            display: flex; justify-content: center; align-items: center;
+            background: var(--bg-dark);
             overflow: hidden;
+            font-family: 'Outfit', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Scanner Visuals */
-        .scanner-container {
-            text-align: center;
-            transition: opacity 0.8s ease;
-        }
-
-        .fingerprint-scanner {
-            width: 120px;
-            height: 120px;
-            border: 2px solid var(--neon-blue);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            margin: 0 auto 30px;
+        /* The Interaction Stage */
+        #hug-stage {
             position: relative;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
-            transition: 0.3s;
-        }
-
-        .fingerprint-scanner i {
-            font-size: 3rem;
-            color: var(--neon-blue);
-            transition: 0.3s;
-        }
-
-        /* The Scan Line */
-        .scan-line {
-            position: absolute;
             width: 100%;
-            height: 2px;
-            background: var(--neon-blue);
-            top: 0;
-            left: 0;
-            box-shadow: 0 0 15px var(--neon-blue);
-            display: none;
-            animation: scanning 2s linear infinite;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10%;
+            transition: opacity 1s ease;
         }
 
-        @keyframes scanning {
-            0% { top: 0%; }
-            50% { top: 100%; }
-            100% { top: 0%; }
+        .hand {
+            font-size: 5rem;
+            cursor: grab;
+            user-select: none;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+            z-index: 10;
         }
 
-        .instruction {
-            letter-spacing: 3px;
+        .hand:active { cursor: grabbing; }
+
+        /* The Center Meeting Point */
+        #target-zone {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Success State */
+        #final-hug {
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 20;
+        }
+
+        /* The Rhyme */
+        #poem-reveal {
+            position: absolute;
+            text-align: center;
+            width: 80%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.5s ease;
+            z-index: 30;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: var(--warm-glow);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            font-style: italic;
+            color: #e0e0e0;
+        }
+
+        #hint {
+            position: fixed;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.3);
             text-transform: uppercase;
             font-size: 0.8rem;
-            color: var(--neon-blue);
-            margin-top: 15px;
         }
 
-        /* The Hidden Promise */
-        #promise-reveal {
-            position: absolute;
-            text-align: center;
-            opacity: 0;
-            display: none;
-            max-width: 500px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
+        .bg-pulse {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #302b63, #0f0c29);
+            z-index: -1;
         }
-
-        .vow-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: var(--promise-pink);
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .certificate-tag {
-            font-size: 0.7rem;
-            color: #555;
-            letter-spacing: 2px;
-            margin-top: 30px;
-            border-top: 1px solid #222;
-            padding-top: 15px;
-        }
-
-        /* Holding state */
-        .holding { transform: scale(0.95); box-shadow: 0 0 50px var(--neon-blue) !important; }
-
     </style>
 </head>
 <body>
 
-    <div class="scanner-container" id="stage1">
-        <div class="fingerprint-scanner" id="scanner" onmousedown="startScan()" onmouseup="stopScan()" ontouchstart="startScan()" ontouchend="stopScan()">
-            <div class="scan-line" id="line"></div>
-            <span style="font-size: 3rem;">👆</span>
-        </div>
-        <div class="instruction" id="hint">Hold to verify promise</div>
+    <div class="bg-pulse" id="bg"></div>
+
+    <div id="hug-stage">
+        <div id="left-hand" class="hand">🫲</div>
+        <div id="target-zone"></div>
+        <div id="right-hand" class="hand">🫱</div>
     </div>
 
-    <div id="promise-reveal">
-        <div class="vow-text" id="vow">
-            "I promise to be your home,<br>
-            your anchor, and your peace.<br>
-            A love that only grows,<br>
-            and vows that never cease."
-        </div>
-        <p style="color: #aaa;">Happy Promise Day. This vow is encrypted in my heart forever.</p>
-        <div class="certificate-tag">
-            VOW ID: 2026-LOVE-PROMISE<br>
-            STATUS: PERMANENTLY SIGNED
-        </div>
+    <div id="final-hug">🫂</div>
+
+    <div id="poem-reveal">
+        <h1>Warmth In Your Arms</h1>
+        <p>
+            "A simple hug to start the day,<br>
+            To chase the heavy clouds away.<br>
+            In your embrace, I find my rest,<br>
+            Of all the world, your heart is best."
+        </p>
     </div>
+
+    <div id="hint">Bring the hands together</div>
 
     <script>
-        let scanTimer;
-        const scanner = document.getElementById('scanner');
-        const line = document.getElementById('line');
-        const stage1 = document.getElementById('stage1');
-        const stage2 = document.getElementById('promise-reveal');
+        const leftHand = document.getElementById('left-hand');
+        const rightHand = document.getElementById('right-hand');
+        const hugStage = document.getElementById('hug-stage');
+        const finalHug = document.getElementById('final-hug');
+        const poem = document.getElementById('poem-reveal');
+        const bg = document.getElementById('bg');
+        const hint = document.getElementById('hint');
 
-        function startScan() {
-            scanner.classList.add('holding');
-            line.style.display = 'block';
-            document.getElementById('hint').innerText = "Authenticating Heartbeat...";
-            
-            scanTimer = setTimeout(() => {
-                revealPromise();
-            }, 2500); // 2.5 seconds hold required
+        let isLocked = false;
+
+        function makeDraggable(el) {
+            let active = false;
+            let currentX, initialX, xOffset = 0;
+
+            el.addEventListener("mousedown", dragStart);
+            el.addEventListener("touchstart", dragStart);
+            window.addEventListener("mousemove", drag);
+            window.addEventListener("touchmove", drag);
+            window.addEventListener("mouseup", dragEnd);
+            window.addEventListener("touchend", dragEnd);
+
+            function dragStart(e) {
+                initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
+                if (e.target === el) active = true;
+            }
+
+            function drag(e) {
+                if (active && !isLocked) {
+                    currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
+                    xOffset = currentX;
+                    el.style.transform = `translateX(${currentX}px)`;
+                    checkMeeting();
+                }
+            }
+            function dragEnd() { active = false; }
         }
 
-        function stopScan() {
-            if (stage2.style.display !== 'block') {
-                scanner.classList.remove('holding');
-                line.style.display = 'none';
-                document.getElementById('hint').innerText = "Hold to verify promise";
-                clearTimeout(scanTimer);
+        makeDraggable(leftHand);
+        makeDraggable(rightHand);
+
+        function checkMeeting() {
+            const rectL = leftHand.getBoundingClientRect();
+            const rectR = rightHand.getBoundingClientRect();
+            
+            // Calculate distance between hands
+            const distance = rectR.left - rectL.right;
+
+            if (distance < 20) {
+                isLocked = true;
+                completeHug();
             }
         }
 
-        function revealPromise() {
-            stage1.style.opacity = '0';
+        function completeHug() {
+            // Hide stage and hands
+            hugStage.style.opacity = "0";
+            hint.style.opacity = "0";
+            
             setTimeout(() => {
-                stage1.style.display = 'none';
-                stage2.style.display = 'block';
+                hugStage.style.display = "none";
+                
+                // Show the big hug emoji
+                finalHug.style.opacity = "1";
+                finalHug.style.transform = "scale(1.2)";
+                bg.style.background = "radial-gradient(circle, #4a00e0, #0f0c29)";
+
+                // Finally reveal the poem
                 setTimeout(() => {
-                    stage2.style.opacity = '1';
-                    // Trigger a small haptic-style shake or sound here if desired
-                }, 50);
+                    finalHug.style.opacity = "0";
+                    finalHug.style.transform = "scale(2)";
+                    
+                    setTimeout(() => {
+                        poem.style.visibility = "visible";
+                        poem.style.opacity = "1";
+                        bg.style.background = "radial-gradient(circle, #8e2de2, #4a00e0)";
+                    }, 800);
+                }, 1500);
             }, 800);
         }
     </script>
