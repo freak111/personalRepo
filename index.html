@@ -3,153 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hug Day 2026 | The Embrace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+    <title>Kiss Day | The Linger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300&display=swap" rel="stylesheet">
     <style>
         :root {
-            --warm-glow: #ff8e72;
-            --bg-dark: #0f0c29;
+            --blush: #ff4d6d;
+            --wine: #2d0b10;
         }
 
         body, html {
             margin: 0; padding: 0;
             height: 100%; width: 100%;
-            background: var(--bg-dark);
+            background: #050505;
             overflow: hidden;
             font-family: 'Outfit', sans-serif;
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        /* The Interaction Stage */
-        #hug-stage {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 10%;
-            transition: opacity 1s ease;
-        }
-
-        .hand {
-            font-size: 5rem;
+        /* Interactive Lips */
+        .lip {
+            position: absolute;
+            font-size: 3.5rem;
             cursor: grab;
             user-select: none;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
             z-index: 10;
+            filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.5));
+            transition: transform 0.1s ease-out;
+            color: #614d4d;
         }
 
-        .hand:active { cursor: grabbing; }
+        .lip:active { cursor: grabbing; }
 
-        /* The Center Meeting Point */
-        #target-zone {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 150px;
-            height: 150px;
-            border: 2px dashed rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            z-index: 1;
+        /* Heartbeat animation when kissing */
+        .kissing-animation {
+            animation: heartbeat 0.8s infinite;
         }
 
-        /* Success State */
-        #final-hug {
-            position: absolute;
-            font-size: 8rem;
+        @keyframes heartbeat {
+            0% { transform: scale(1.2); filter: drop-shadow(0 0 20px var(--blush)); }
+            50% { transform: scale(1.4); filter: drop-shadow(0 0 40px var(--blush)); }
+            100% { transform: scale(1.2); filter: drop-shadow(0 0 20px var(--blush)); }
+        }
+
+        /* Background Blush Overlay */
+        #blush-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--blush);
             opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 20;
+            pointer-events: none;
+            transition: opacity 2s ease;
+            z-index: 5;
         }
 
-        /* The Rhyme */
-        #poem-reveal {
+        /* The Final Poem */
+        #poem-zone {
             position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -40%);
             text-align: center;
-            width: 80%;
+            width: 85%;
             opacity: 0;
             visibility: hidden;
-            transition: all 1.5s ease;
-            z-index: 30;
+            transition: all 2s ease;
+            z-index: 20;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            color: var(--warm-glow);
+            font-size: 4.5rem;
             margin-bottom: 20px;
+            color: white;
         }
 
         p {
             font-size: 1.5rem;
-            line-height: 1.6;
+            line-height: 1.8;
             font-style: italic;
-            color: #e0e0e0;
+            color: #ffdce3;
         }
 
-        #hint {
+        #instruction {
             position: fixed;
             bottom: 40px;
             width: 100%;
             text-align: center;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             color: rgba(255,255,255,0.3);
             text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .bg-pulse {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #302b63, #0f0c29);
-            z-index: -1;
+            font-size: 0.7rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-pulse" id="bg"></div>
+    <div id="blush-overlay"></div>
 
-    <div id="hug-stage">
-        <div id="left-hand" class="hand">🫲</div>
-        <div id="target-zone"></div>
-        <div id="right-hand" class="hand">🫱</div>
-    </div>
+    <div id="lip-left" class="lip" style="top: 45%; left: 15%;">💋 Kamila</div>
+    <div id="lip-right" class="lip" style="top: 45%; left: 75%;">💋 Golu Molu</div>
 
-    <div id="final-hug">🫂</div>
-
-    <div id="poem-reveal">
-        <h1>Warmth In Your Arms</h1>
+    <div id="poem-zone">
+        <h1>A Moment Stolen</h1>
         <p>
-            "A simple hug to start the day,<br>
-            To chase the heavy clouds away.<br>
-            In your embrace, I find my rest,<br>
-            Of all the world, your heart is best."
+            "The world fades out, the silence grows,<br>
+            As time stands still and heaven knows.<br>
+            A million words couldn't say as much,<br>
+            As the magic found in a single touch."
         </p>
     </div>
 
-    <div id="hint">Bring the hands together</div>
+    <div id="instruction">Bring them together and hold...</div>
 
     <script>
-        const leftHand = document.getElementById('left-hand');
-        const rightHand = document.getElementById('right-hand');
-        const hugStage = document.getElementById('hug-stage');
-        const finalHug = document.getElementById('final-hug');
-        const poem = document.getElementById('poem-reveal');
-        const bg = document.getElementById('bg');
-        const hint = document.getElementById('hint');
+        let isKissing = false;
+        const lips = {
+            left: document.getElementById('lip-left'),
+            right: document.getElementById('lip-right')
+        };
+        const overlay = document.getElementById('blush-overlay');
+        const poem = document.getElementById('poem-zone');
+        const instruction = document.getElementById('instruction');
 
-        let isLocked = false;
-
-        function makeDraggable(el) {
+        function setupDrag(el) {
             let active = false;
-            let currentX, initialX, xOffset = 0;
+            let currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
 
             el.addEventListener("mousedown", dragStart);
             el.addEventListener("touchstart", dragStart);
@@ -159,62 +136,80 @@
             window.addEventListener("touchend", dragEnd);
 
             function dragStart(e) {
+                if (isKissing) return;
                 initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
+                initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
                 if (e.target === el) active = true;
             }
 
             function drag(e) {
-                if (active && !isLocked) {
+                if (active && !isKissing) {
                     currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
+                    currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
                     xOffset = currentX;
-                    el.style.transform = `translateX(${currentX}px)`;
-                    checkMeeting();
+                    yOffset = currentY;
+                    el.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+                    checkCollision();
                 }
             }
+
             function dragEnd() { active = false; }
         }
 
-        makeDraggable(leftHand);
-        makeDraggable(rightHand);
+        setupDrag(lips.left);
+        setupDrag(lips.right);
 
-        function checkMeeting() {
-            const rectL = leftHand.getBoundingClientRect();
-            const rectR = rightHand.getBoundingClientRect();
+        function checkCollision() {
+            const r1 = lips.left.getBoundingClientRect();
+            const r2 = lips.right.getBoundingClientRect();
             
-            // Calculate distance between hands
-            const distance = rectR.left - rectL.right;
+            const distance = Math.sqrt(
+                Math.pow(r1.left - r2.left, 2) + 
+                Math.pow(r1.top - r2.top, 2)
+            );
 
-            if (distance < 20) {
-                isLocked = true;
-                completeHug();
+            if (distance < 60 && !isKissing) {
+                isKissing = true;
+                startTheKiss();
             }
         }
 
-        function completeHug() {
-            // Hide stage and hands
-            hugStage.style.opacity = "0";
-            hint.style.opacity = "0";
+        function startTheKiss() {
+            // Snap them together
+            const centerX = (window.innerWidth / 2) - 30;
+            const centerY = (window.innerHeight / 2) - 30;
             
-            setTimeout(() => {
-                hugStage.style.display = "none";
-                
-                // Show the big hug emoji
-                finalHug.style.opacity = "1";
-                finalHug.style.transform = "scale(1.2)";
-                bg.style.background = "radial-gradient(circle, #4a00e0, #0f0c29)";
+            lips.left.style.transition = "all 0.5s ease";
+            lips.right.style.transition = "all 0.5s ease";
+            
+            lips.left.style.left = centerX + "px";
+            lips.left.style.top = centerY + "px";
+            lips.right.style.left = centerX + "px";
+            lips.right.style.top = centerY + "px";
+            lips.left.style.transform = "translate3d(0,0,0)";
+            lips.right.style.transform = "translate3d(0,0,0)";
 
-                // Finally reveal the poem
+            // Start the heartbeat linger
+            lips.left.classList.add('kissing-animation');
+            lips.right.classList.add('kissing-animation');
+            
+            instruction.innerText = "Don't let go...";
+
+            // After 2 seconds of "kissing", fade to poem
+            setTimeout(() => {
+                overlay.style.opacity = "1";
+                lips.left.style.opacity = "0";
+                lips.right.style.opacity = "0";
+                instruction.style.opacity = "0";
+                
                 setTimeout(() => {
-                    finalHug.style.opacity = "0";
-                    finalHug.style.transform = "scale(2)";
-                    
-                    setTimeout(() => {
-                        poem.style.visibility = "visible";
-                        poem.style.opacity = "1";
-                        bg.style.background = "radial-gradient(circle, #8e2de2, #4a00e0)";
-                    }, 800);
+                    document.body.style.background = "var(--wine)";
+                    overlay.style.opacity = "0";
+                    poem.style.visibility = "visible";
+                    poem.style.opacity = "1";
+                    poem.style.transform = "translate(-50%, -50%)";
                 }, 1500);
-            }, 800);
+            }, 2500);
         }
     </script>
 </body>
