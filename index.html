@@ -3,214 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiss Day | The Linger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300&display=swap" rel="stylesheet">
+    <title>The Story of Us | Valentine 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --blush: #ff4d6d;
-            --wine: #2d0b10;
+            --gold: #c5a059;
+            --rose: #ff4d6d;
+            --cocoa: #3d1c02;
+            --teddy: #bb9457;
+            --blue: #00f2ff;
+            --hug: #ff9e00;
+            --kiss: #6a040f;
         }
 
-        body, html {
-            margin: 0; padding: 0;
-            height: 100%; width: 100%;
-            background: #050505;
-            overflow: hidden;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #000;
+            color: white;
             font-family: 'Outfit', sans-serif;
-            color: white;
+            overflow-x: hidden;
         }
 
-        /* Interactive Lips */
-        .lip {
-            position: absolute;
-            font-size: 3.5rem;
-            cursor: grab;
-            user-select: none;
-            z-index: 10;
-            filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.5));
-            transition: transform 0.1s ease-out;
-            color: #614d4d;
-        }
-
-        .lip:active { cursor: grabbing; }
-
-        /* Heartbeat animation when kissing */
-        .kissing-animation {
-            animation: heartbeat 0.8s infinite;
-        }
-
-        @keyframes heartbeat {
-            0% { transform: scale(1.2); filter: drop-shadow(0 0 20px var(--blush)); }
-            50% { transform: scale(1.4); filter: drop-shadow(0 0 40px var(--blush)); }
-            100% { transform: scale(1.2); filter: drop-shadow(0 0 20px var(--blush)); }
-        }
-
-        /* Background Blush Overlay */
-        #blush-overlay {
+        /* Fixed Background Element */
+        .year-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--blush);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 2s ease;
-            z-index: 5;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 25vw;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: -1;
+            user-select: none;
         }
 
-        /* The Final Poem */
-        #poem-zone {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -40%);
-            text-align: center;
-            width: 85%;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 2s ease;
-            z-index: 20;
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 10%;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        h1 {
+        .content-box {
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .visible .content-box {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .date-label {
+            font-size: 0.9rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: 4.5rem;
+            font-size: 4rem;
             margin-bottom: 20px;
-            color: white;
         }
 
         p {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             line-height: 1.8;
-            font-style: italic;
-            color: #ffdce3;
+            font-weight: 200;
+            color: #aaa;
         }
 
-        #instruction {
-            position: fixed;
-            bottom: 40px;
-            width: 100%;
-            text-align: center;
-            letter-spacing: 5px;
-            color: rgba(255,255,255,0.3);
-            text-transform: uppercase;
-            font-size: 0.7rem;
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
         }
+
+        /* Section Specific Colors */
+        #rose { --theme: var(--rose); }
+        #propose { --theme: var(--gold); }
+        #chocolate { --theme: var(--cocoa); }
+        #teddy { --theme: var(--teddy); }
+        #promise { --theme: var(--blue); }
+        #hug { --theme: var(--hug); }
+        #kiss { --theme: var(--kiss); }
+        #valentine { --theme: #fff; }
+
+        h2 { color: var(--theme); text-shadow: 0 0 20px rgba(var(--theme), 0.2); }
+
+        /* The Grand Finale Image */
+        .final-img-container {
+            margin-top: 40px;
+            position: relative;
+            border: 1px solid var(--gold);
+            padding: 10px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .final-img-container img {
+            width: 100%;
+            display: block;
+            filter: grayscale(20%) contrast(1.1);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: var(--gold);
+            transform: scale(1.8);
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
     </style>
 </head>
 <body>
 
-    <div id="blush-overlay"></div>
+    <div class="year-bg">2026</div>
 
-    <div id="lip-left" class="lip" style="top: 45%; left: 15%;">💋 Kamila</div>
-    <div id="lip-right" class="lip" style="top: 45%; left: 75%;">💋 Golu Molu</div>
-
-    <div id="poem-zone">
-        <h1>A Moment Stolen</h1>
-        <p>
-            "The world fades out, the silence grows,<br>
-            As time stands still and heaven knows.<br>
-            A million words couldn't say as much,<br>
-            As the magic found in a single touch."
-        </p>
+    <div class="scroll-indicator" id="nav">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
     </div>
 
-    <div id="instruction">Bring them together and hold...</div>
+    <section id="rose">
+        <div class="content-box">
+            <span class="date-label">February 7</span>
+            <span class="icon">🌹</span>
+            <h2>Rose Day</h2>
+            <p>Our week began with a single bloom. A symbol of the grace and beauty you brought into my life. The spark that ignited this journey.</p>
+        </div>
+        <div class="scroll-hint">Scroll to continue our story</div>
+    </section>
+
+    <section id="propose">
+        <div class="content-box">
+            <span class="date-label">February 8</span>
+            <span class="icon">💍</span>
+            <h2>Propose Day</h2>
+            <p>I didn't just ask for your hand; I asked for your heart. A promise to walk beside you, no matter where the stars lead us.</p>
+        </div>
+    </section>
+
+    <section id="chocolate">
+        <div class="content-box">
+            <span class="date-label">February 9</span>
+            <span class="icon">🍫</span>
+            <h2>Chocolate Day</h2>
+            <p>Life became a box of sweet surprises. Every moment with you is a decadent delight, richer than any dark cocoa.</p>
+        </div>
+    </section>
+
+    <section id="teddy">
+        <div class="content-box">
+            <span class="date-label">February 10</span>
+            <span class="icon">🧸</span>
+            <h2>Teddy Day</h2>
+            <p>For the times I can't be there, I sent a hug in the form of stardust and softness. A constant reminder that you are never alone.</p>
+        </div>
+    </section>
+
+    <section id="promise">
+        <div class="content-box">
+            <span class="date-label">February 11</span>
+            <span class="icon">🔐</span>
+            <h2>Promise Day</h2>
+            <p>Signed in our digital souls. A vow that transcends time—to be your anchor, your home, and your greatest supporter.</p>
+        </div>
+    </section>
+
+    <section id="hug">
+        <div class="content-box">
+            <span class="date-label">February 12</span>
+            <span class="icon">🫂</span>
+            <h2>Hug Day</h2>
+            <p>When the fragments of the world pull us apart, we find our strength in the center. A warm embrace where everything makes sense.</p>
+        </div>
+    </section>
+
+    <section id="kiss">
+        <div class="content-box">
+            <span class="date-label">February 13</span>
+            <span class="icon">💋</span>
+            <h2>Kiss Day</h2>
+            <p>The electric touch that stops time. A silent conversation between two hearts, sealing our fate with a single breath.</p>
+        </div>
+    </section>
+
+    <section id="valentine">
+        <div class="content-box">
+            <span class="date-label">February 14</span>
+            <span class="icon">✨</span>
+            <h2>Valentine's Day</h2>
+            <p>The destination of our 7-day climb. Here we are—soulmates, partners, and everything in between.</p>
+            <div class="final-img-container">
+                <img src="test4.png" alt="Us Forever">
+            </div>
+            <p style="margin-top:20px; font-family: 'Dancing Script'; font-size: 2rem; color: var(--gold);">Happy Valentine's Day, My Love.</p>
+        </div>
+    </section>
 
     <script>
-        let isKissing = false;
-        const lips = {
-            left: document.getElementById('lip-left'),
-            right: document.getElementById('lip-right')
-        };
-        const overlay = document.getElementById('blush-overlay');
-        const poem = document.getElementById('poem-zone');
-        const instruction = document.getElementById('instruction');
+        const sections = document.querySelectorAll('section');
+        const dots = document.querySelectorAll('.dot');
 
-        function setupDrag(el) {
-            let active = false;
-            let currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
-
-            el.addEventListener("mousedown", dragStart);
-            el.addEventListener("touchstart", dragStart);
-            window.addEventListener("mousemove", drag);
-            window.addEventListener("touchmove", drag);
-            window.addEventListener("mouseup", dragEnd);
-            window.addEventListener("touchend", dragEnd);
-
-            function dragStart(e) {
-                if (isKissing) return;
-                initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
-                initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
-                if (e.target === el) active = true;
-            }
-
-            function drag(e) {
-                if (active && !isKissing) {
-                    currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
-                    currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
-                    xOffset = currentX;
-                    yOffset = currentY;
-                    el.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-                    checkCollision();
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - sectionHeight / 3) {
+                    current = index;
+                    section.classList.add('visible');
                 }
-            }
+            });
 
-            function dragEnd() { active = false; }
-        }
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
 
-        setupDrag(lips.left);
-        setupDrag(lips.right);
-
-        function checkCollision() {
-            const r1 = lips.left.getBoundingClientRect();
-            const r2 = lips.right.getBoundingClientRect();
-            
-            const distance = Math.sqrt(
-                Math.pow(r1.left - r2.left, 2) + 
-                Math.pow(r1.top - r2.top, 2)
-            );
-
-            if (distance < 60 && !isKissing) {
-                isKissing = true;
-                startTheKiss();
-            }
-        }
-
-        function startTheKiss() {
-            // Snap them together
-            const centerX = (window.innerWidth / 2) - 30;
-            const centerY = (window.innerHeight / 2) - 30;
-            
-            lips.left.style.transition = "all 0.5s ease";
-            lips.right.style.transition = "all 0.5s ease";
-            
-            lips.left.style.left = centerX + "px";
-            lips.left.style.top = centerY + "px";
-            lips.right.style.left = centerX + "px";
-            lips.right.style.top = centerY + "px";
-            lips.left.style.transform = "translate3d(0,0,0)";
-            lips.right.style.transform = "translate3d(0,0,0)";
-
-            // Start the heartbeat linger
-            lips.left.classList.add('kissing-animation');
-            lips.right.classList.add('kissing-animation');
-            
-            instruction.innerText = "Don't let go...";
-
-            // After 2 seconds of "kissing", fade to poem
-            setTimeout(() => {
-                overlay.style.opacity = "1";
-                lips.left.style.opacity = "0";
-                lips.right.style.opacity = "0";
-                instruction.style.opacity = "0";
-                
-                setTimeout(() => {
-                    document.body.style.background = "var(--wine)";
-                    overlay.style.opacity = "0";
-                    poem.style.visibility = "visible";
-                    poem.style.opacity = "1";
-                    poem.style.transform = "translate(-50%, -50%)";
-                }, 1500);
-            }, 2500);
-        }
+        // Trigger first section
+        sections[0].classList.add('visible');
     </script>
 </body>
 </html>
