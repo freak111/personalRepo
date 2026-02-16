@@ -3,271 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Story of Us | Valentine 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <title>My Eternal Vision | 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #c5a059;
-            --rose: #ff4d6d;
-            --cocoa: #3d1c02;
-            --teddy: #bb9457;
-            --blue: #00f2ff;
-            --hug: #ff9e00;
-            --kiss: #6a040f;
+            --love-red: #da1212;
+            --rose-gold: #e7c6ff;
+            --text-color: #4a0612;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: #000;
-            color: white;
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background: #fff;
             font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
         }
 
-        /* Fixed Background Element */
-        .year-bg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 25vw;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.03);
-            z-index: -1;
-            user-select: none;
+        /* The canvas for the "Heat" of her touch */
+        #paint-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 10;
+            cursor: pointer;
         }
 
-        section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 100px 10%;
-            position: relative;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .content-box {
-            max-width: 600px;
+        /* The Photo Container */
+        #frame {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -55%);
+            width: 85%;
+            max-width: 380px;
+            z-index: 1;
             opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+            filter: blur(15px);
+            transition: opacity 2.5s ease, filter 3s ease;
+            text-align: center;
         }
 
-        .visible .content-box {
-            opacity: 1;
-            transform: translateY(0);
+        #frame img {
+            width: 100%;
+            border-radius: 40px 40px 5px 5px; /* Elegant traditional curve */
+            box-shadow: 0 20px 60px rgba(218, 18, 18, 0.15);
         }
 
-        .date-label {
-            font-size: 0.9rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 10px;
-            display: block;
+        /* The Floating Hearts Trail */
+        .heart-particle {
+            position: absolute;
+            pointer-events: none;
+            color: var(--love-red);
+            font-size: 20px;
+            z-index: 11;
+            animation: float-up 1.5s ease-out forwards;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        }
+
+        /* Loving Message */
+        #message {
+            position: absolute;
+            bottom: 8%;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease;
+            z-index: 15;
         }
 
         h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 2.8rem;
+            color: var(--text-color);
+            margin: 0;
         }
 
         p {
+            color: #888;
             font-size: 1.1rem;
-            line-height: 1.8;
-            font-weight: 200;
-            color: #aaa;
+            margin-top: 5px;
+            letter-spacing: 1px;
         }
 
-        .icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        /* Section Specific Colors */
-        #rose { --theme: var(--rose); }
-        #propose { --theme: var(--gold); }
-        #chocolate { --theme: var(--cocoa); }
-        #teddy { --theme: var(--teddy); }
-        #promise { --theme: var(--blue); }
-        #hug { --theme: var(--hug); }
-        #kiss { --theme: var(--kiss); }
-        #valentine { --theme: #fff; }
-
-        h2 { color: var(--theme); text-shadow: 0 0 20px rgba(var(--theme), 0.2); }
-
-        /* The Grand Finale Image */
-        .final-img-container {
-            margin-top: 40px;
-            position: relative;
-            border: 1px solid var(--gold);
-            padding: 10px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(10px);
-        }
-
-        .final-img-container img {
-            width: 100%;
-            display: block;
-            filter: grayscale(20%) contrast(1.1);
-        }
-
-        .scroll-indicator {
+        #hint {
             position: fixed;
-            right: 30px;
             top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 100;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        .dot.active {
-            background: var(--gold);
-            transform: scale(1.8);
-        }
-        .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            font-size: 0.7rem;
+            width: 100%;
+            text-align: center;
+            color: #ffb3c1;
             letter-spacing: 3px;
-            color: var(--gold);
             text-transform: uppercase;
-            animation: bounce 2s infinite;
+            font-size: 0.8rem;
+            pointer-events: none;
+            z-index: 20;
+            animation: pulse 2s infinite;
         }
 
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="year-bg">2026</div>
+    <div id="hint">Touch here to see how you live in my heart...</div>
 
-    <div class="scroll-indicator" id="nav">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
+    <canvas id="paint-canvas"></canvas>
+
+    <div id="frame">
+        <img src="tred.png" alt="Traditional Elegance">
+         <!-- <img src="cute.jpg" alt="Traditional Elegance"> -->
     </div>
 
-    <section id="rose">
-        <div class="content-box">
-            <span class="date-label">February 7</span>
-            <span class="icon">🌹</span>
-            <h2>Rose Day</h2>
-            <p>Our week began with a single bloom. A symbol of the grace and beauty you brought into my life. The spark that ignited this journey.</p>
-        </div>
-        <div class="scroll-hint">Scroll to continue our story</div>
-    </section>
-
-    <section id="propose">
-        <div class="content-box">
-            <span class="date-label">February 8</span>
-            <span class="icon">💍</span>
-            <h2>Propose Day</h2>
-            <p>I didn't just ask for your hand; I asked for your heart. A promise to walk beside you, no matter where the stars lead us.</p>
-        </div>
-    </section>
-
-    <section id="chocolate">
-        <div class="content-box">
-            <span class="date-label">February 9</span>
-            <span class="icon">🍫</span>
-            <h2>Chocolate Day</h2>
-            <p>Life became a box of sweet surprises. Every moment with you is a decadent delight, richer than any dark cocoa.</p>
-        </div>
-    </section>
-
-    <section id="teddy">
-        <div class="content-box">
-            <span class="date-label">February 10</span>
-            <span class="icon">🧸</span>
-            <h2>Teddy Day</h2>
-            <p>For the times I can't be there, I sent a hug in the form of stardust and softness. A constant reminder that you are never alone.</p>
-        </div>
-    </section>
-
-    <section id="promise">
-        <div class="content-box">
-            <span class="date-label">February 11</span>
-            <span class="icon">🔐</span>
-            <h2>Promise Day</h2>
-            <p>Signed in our digital souls. A vow that transcends time—to be your anchor, your home, and your greatest supporter.</p>
-        </div>
-    </section>
-
-    <section id="hug">
-        <div class="content-box">
-            <span class="date-label">February 12</span>
-            <span class="icon">🫂</span>
-            <h2>Hug Day</h2>
-            <p>When the fragments of the world pull us apart, we find our strength in the center. A warm embrace where everything makes sense.</p>
-        </div>
-    </section>
-
-    <section id="kiss">
-        <div class="content-box">
-            <span class="date-label">February 13</span>
-            <span class="icon">💋</span>
-            <h2>Kiss Day</h2>
-            <p>The electric touch that stops time. A silent conversation between two hearts, sealing our fate with a single breath.</p>
-        </div>
-    </section>
-
-    <section id="valentine">
-        <div class="content-box">
-            <span class="date-label">February 14</span>
-            <span class="icon">✨</span>
-            <h2>Valentine's Day</h2>
-            <p>The destination of our 7-day climb. Here we are—soulmates, partners, and everything in between.</p>
-            <div class="final-img-container">
-                <img src="test4.png" alt="Us Forever">
-            </div>
-            <p style="margin-top:20px; font-family: 'Dancing Script'; font-size: 2rem; color: var(--gold);">Happy Valentine's Day, My Love.</p>
-        </div>
-    </section>
+    <div id="message">
+        <h2>You, Yesterday.</h2>
+        <p>In your grace, I found my forever.</p>
+    </div>
 
     <script>
-        const sections = document.querySelectorAll('section');
-        const dots = document.querySelectorAll('.dot');
+        const canvas = document.getElementById('paint-canvas');
+        const ctx = canvas.getContext('2d');
+        const frame = document.getElementById('frame');
+        const message = document.getElementById('message');
+        const hint = document.getElementById('hint');
+        
+        let touchCount = 0;
 
-        window.addEventListener('scroll', () => {
-            let current = "";
-            sections.forEach((section, index) => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - sectionHeight / 3) {
-                    current = index;
-                    section.classList.add('visible');
-                }
-            });
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'destination-out';
+        }
 
-            dots.forEach((dot, index) => {
-                dot.classList.remove('active');
-                if (index === current) {
-                    dot.classList.add('active');
-                }
-            });
-        });
+        function handleMove(e) {
+            const x = e.touches ? e.touches[0].clientX : e.clientX;
+            const y = e.touches ? e.touches[0].clientY : e.clientY;
 
-        // Trigger first section
-        sections[0].classList.add('visible');
+            // Erase the white
+            ctx.beginPath();
+            ctx.arc(x, y, 45, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Create Loving Heart Trail
+            if (touchCount % 5 === 0) {
+                createHeart(x, y);
+            }
+
+            touchCount++;
+
+            // Reveal effects
+            if (touchCount > 15) {
+                frame.style.opacity = "1";
+                frame.style.filter = "blur(0px)";
+                hint.style.opacity = "0";
+                document.body.style.background = "linear-gradient(to bottom, #fff, #fff0f3)";
+            }
+            
+            if (touchCount > 80) {
+                message.style.opacity = "1";
+            }
+        }
+
+        function createHeart(x, y) {
+            const h = document.createElement('div');
+            h.className = 'heart-particle';
+            h.innerHTML = '❤️';
+            h.style.left = x + 'px';
+            h.style.top = y + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1500);
+        }
+
+        canvas.addEventListener('mousemove', handleMove);
+        canvas.addEventListener('touchmove', handleMove);
+        window.addEventListener('resize', init);
+        
+        init();
     </script>
 </body>
 </html>
