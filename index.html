@@ -1,487 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emergency: Hotness Overload</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&family=Courier+Prime&display=swap"
-        rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Holi Healing | 2026</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --pink: #ff007f;
+            --cyan: #00f2ff;
+            --purple: #9d00ff;
+            --yellow: #ffee00;
         }
 
-        body {
-            font-family: 'Raleway', sans-serif;
-            background-color: #0a0a0a;
-            color: #f5f5f5;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- 1. SEQUENTIAL OVERLAY (THE SCRATCHER) --- */
-        #fever-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10001;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        #glitch-box {
-            position: absolute;
-            z-index: 10002;
-            text-align: center;
-            color: #00ff00;
-            font-family: 'Courier Prime', monospace;
-            pointer-events: none;
-            padding: 20px;
-        }
-
-        .error-code {
-            font-size: 1.8rem;
-            background: #e91e63;
+        body, html {
+            margin: 0; padding: 0;
+            width: auto; height: auto;
+            background: #050505;
             color: white;
-            display: inline-block;
-            padding: 8px 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px #e91e63;
-            animation: blink 0.4s infinite alternate;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden; /* No scroll, purely interactive */
+            touch-action: none;
         }
 
-        @keyframes blink {
-            from {
-                opacity: 1;
-            }
-
-            to {
-                opacity: 0.4;
-            }
-        }
-
-        .funny-alert {
-            font-size: 1.1rem;
-            color: #ffb3c1;
-            margin-bottom: 30px;
-        }
-
-        .mission-box {
-            border: 2px dashed #4dbaff;
-            padding: 20px;
-            background: rgba(77, 186, 255, 0.1);
-            border-radius: 15px;
-        }
-
-        .pulse-icon {
-            font-size: 40px;
-            animation: tapPulse 1s infinite;
-            margin-top: 10px;
-        }
-
-        @keyframes tapPulse {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(1.4);
-                opacity: 0;
-            }
-        }
-
-        #scratcher {
+        canvas {
+            display: block;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: crosshair;
+            top: 0; left: 0;
+            z-index: 1;
         }
 
-        /* --- 2. MAIN CONTENT STYLING --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 20px 0;
-        }
-
-        .logo {
-            font-family: 'Dancing Script', cursive;
-            font-size: 32px;
-            color: #e91e63;
-            text-decoration: none;
-        }
-
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* --- UI OVERLAY --- */
+        #ui-layer {
             position: relative;
-            text-align: center;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            z-index: 10;
             height: 100%;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1516589174184-c6848b11a421?q=80&w=1887&auto=format&fit=crop');
-            background-size: cover;
-            z-index: -1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 25px;
+            pointer-events: none; /* Let touches pass to canvas */
         }
 
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .section-title {
+        .header {
             text-align: center;
-            margin-bottom: 60px;
-            padding: 0 10px;
+            animation: fadeInDown 1.5s ease-out;
         }
 
-        .section-title h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            color: #e91e63;
+        .header h1 {
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--cyan);
             margin-bottom: 10px;
         }
 
-        .section-title p {
-            color: #aaa;
-            font-size: 1.1rem;
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.6;
         }
 
-        /* MOTIVATIONAL CARDS */
-        .love-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .love-card {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* CENTER MESSAGE */
+        .main-message {
             text-align: center;
-            transition: transform 0.3s;
         }
 
-        .love-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .love-card i {
-            font-size: 45px;
-            margin-bottom: 20px;
-        }
-
-        .love-card h3 {
+        .main-message h2 {
+            font-size: 2.5rem;
+            line-height: 1.1;
             margin-bottom: 15px;
-            font-size: 1.5rem;
-            color: #fff;
+            background: linear-gradient(to right, var(--pink), var(--yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* SLIDER */
-        .romantic-slider {
-            background: #111;
-            padding: 60px 20px;
-            border-radius: 20px;
-            text-align: center;
-            margin-top: 50px;
-            border: 1px solid #222;
+        /* FLOATING CARDS */
+        .floating-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .slide {
-            display: none;
-            max-width: 800px;
-            margin: 0 auto;
+        .mini-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-left: 3px solid var(--pink);
+            border-radius: 0 15px 15px 0;
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0;
         }
 
-        .slide.active {
-            display: block;
-            animation: fadeIn 1s;
-        }
+        .mini-card:nth-child(2) { animation-delay: 0.5s; border-color: var(--cyan); }
+        .mini-card h3 { font-size: 0.9rem; color: var(--yellow); margin-bottom: 5px; }
+        .mini-card p { font-size: 0.85rem; line-height: 1.4; margin: 0; }
 
-        .slide h3 {
-            color: #e91e63;
-            margin-bottom: 20px;
-            font-family: 'Playfair Display';
-        }
-
-        .slide p {
-            font-style: italic;
-            font-size: 1.2rem;
-            color: #ddd;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, #e91e63, #ff4081);
-            color: white;
-            padding: 16px 45px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 25px;
-            transition: 0.3s;
+        /* THE CURE BUTTON */
+        .cure-trigger {
+            pointer-events: auto;
+            background: white;
+            color: black;
             border: none;
-            cursor: pointer;
+            padding: 18px;
+            border-radius: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: auto;
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3);
+            margin-top: 20px;
         }
 
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(233, 30, 99, 0.4);
+        /* ANIMATIONS */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        /* FINAL POPUP */
-        #loveModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 20000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(15px);
+        /* MODAL */
+        #holiModal {
+            position: fixed; top: 0; left: 0; width: auto; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 100;
+            display: none; justify-content: center; align-items: center;
+            padding: 30px; text-align: center;
         }
-
-        .modal-content {
-            background: #1a1a1a;
-            padding: 50px 30px;
-            border-radius: 30px;
-            text-align: center;
-            border: 2px solid #e91e63;
-            max-width: 450px;
-            width: 90%;
-            box-shadow: 0 0 40px rgba(233, 30, 99, 0.3);
-        }
+        
+        .modal-inner h2 { font-size: 3rem; color: var(--pink); margin-bottom: 20px; }
+        .modal-inner p { line-height: 1.6; opacity: 0.8; }
     </style>
 </head>
-
 <body>
 
-    <div id="fever-screen">
-        <div id="glitch-box">
-            <h1 class="error-code">SYSTEM ERROR: 405 HOTNESS_OVERLOAD</h1>
-            <p class="funny-alert">Our sensors detect elevated temperature levels... <br>Diagnosis: Excessive beauty and
-                unstoppable attitude. 🌡️🔥
-                Doctors confirm: This level of hotness is illegal in 72 countries.</p>
+    <canvas id="canvas"></canvas>
 
-            <div class="mission-box">
-                <p><strong>MISSION:</strong> Swipe/Wipe away the "Fever Fog" to reveal your strength.</p>
-                <div class="pulse-icon">👆</div>
-            </div>
+    <div id="ui-layer">
+        <div class="header">
+            <h1>Holi 2026</h1>
+            <p>Tap anywhere to throw digital colors</p>
         </div>
-        <canvas id="scratcher"></canvas>
+
+        <div class="main-message">
+            <h2>You Are My<br>Most Beautiful Color</h2>
+        </div>
+
+        <div class="floating-cards">
+            <div class="mini-card">
+            
+                <p>With every splash of color, I send you a kiss of warmth, a hug of comfort, and a prayer for your healing, My Love.</p>
+            </div>
+            <div class="mini-card">
+                
+                <p>This Holi, I don’t need colors in the sky , your smile alone paints my entire world in love.</p>
+            </div>
+            
+            <button class="cure-trigger" onclick="openModal()">Get Your Holi Dose</button>
+        </div>
     </div>
 
-    <header>
-        <div class="container">
-            <a href="#" class="logo">Essence of You</a>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1>To My Unstoppable Love</h1>
-            <p>Even superheroes need rest days.
-                This fever is just scared of how powerful you are and tried to slow you down.
-                Spoiler alert: It already lost.
-            </p>
-            <a href="#motivation" class="cta-button">Enter Your Sanctuary</a>
-        </div>
-    </section>
-
-    <section id="motivation" style="padding: 100px 0;">
-        <div class="container">
-            <div class="section-title">
-                <h2>The Spirit of a Princess </h2>
-                <p>You conquer hearts daily without effort.
-                    A tiny fever thinks it can compete?
-                    Please… it doesn’t even stand a chance.
-                </p>
-            </div>
-
-            <div class="love-grid">
-                <div class="love-card">
-                    <i class="fas fa-fire-alt" style="color: #ff9800;"></i>
-                    <h3>Internal Fire</h3>
-                    <p>Even when you're resting, you're glowing.
-                        Your body is just buffering because your greatness loads in 4K Ultra HD.
-                    </p>
-                </div>
-                <div class="love-card">
-                    <i class="fas fa-heart" style="color: #4dbaff;"></i>
-                    <h3>Fever: Temporary.</h3>
-                    <p>Your cuteness while pretending to be sick: Extremely dangerous.
-                        Get well soon, my dramatic little superstar.</p>
-                </div>
-                <div class="love-card">
-                    <i class="fas fa-shield-heart" style="color: #e91e63;"></i>
-                    <h3>Your attitude: Permanent.</h3>
-                    <p>Viral fever is temporary, but the way you handle everything is legendary. Get well soon, my love.
-                    </p>
-                </div>
-            </div>
-
-            <div class="romantic-slider">
-                <div class="slide active">
-                    <h3>The Conqueror's Rest</h3>
-                    <p>"The stars don't shine without a little darkness, and a Princess doesn't rule without knowing how
-                        to rest. Take your time, breathe deep, and know you are my hero."</p>
-                </div>
-                <div class="slide">
-                    <h3>The Shared Path</h3>
-                    <p>"If strength had a face, it would look like you.
-                        If stubbornness had a crown, you'd wear it proudly.
-                        And if love had a definition… it would simply say, You."</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section style="text-align: center; padding: 100px 0; background: #0f0f0f; border-top: 1px solid #222;">
-        <h2>Ready for the Final Cure?</h2>
-        <p>Warning: Clicking below may cause excessive smiling, uncontrolled blushing, and permanent attachment to me.
-        </p>
-        <button class="cta-button" onclick="openModal()">Say Yes to Healing</button>
-    </section>
-
-    <div id="loveModal">
-        <div class="modal-content">
-            <div style="font-size: 70px; margin-bottom: 20px;">🧸❤️</div>
-            <h2 style="font-family: 'Dancing Script'; font-size: 36px; color: #e91e63;">Fever Deleted!</h2>
-            <p style="margin: 20px 0; color: #ccc; font-size: 1.1rem;">
-                Medical Report:
-                Condition: Too adorable.
-                Prescription:
-                ✔ 10,000 tight hugs
-                ✔ Unlimited forehead kisses
-                ✔ Daily "I love you" reminders
-                ✔ Lifetime subscription to Me
-
-                Side effects may include:
-                Falling deeper in love and never letting me go.
-
-                <br><br>
-                <strong>Rest up, My Princess!</strong>
-            </p>
-            <button class="cta-button" onclick="closeModal()">Forever Yours</button>
+    <div id="holiModal">
+        <div class="modal-inner">
+            <h2>❤️</h2>
+        <p>
+If I could, I would color your cheeks myself,  
+hold your hands in mine,  
+and whisper how lucky I am to love you.  
+<br><br>
+This Holi, may every color heal you,  
+every breeze comfort you,  
+and every heartbeat remind you 
+you are my forever festival.  
+<br><br>
+<b>Happy Holi, My Love ❤️</b>
+</p>
+            <button class="cure-trigger" onclick="closeModal()">Forever Mine</button>
         </div>
     </div>
 
     <script>
-        // --- FEVER SCRATCH LOGIC ---
-        const canvas = document.getElementById('scratcher');
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let drawing = false;
+        let particles = [];
 
-        function initScratcher() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            // The Fog
-            ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
 
-            // Add "Hotness" Glow Spots
-            for (let i = 0; i < 15; i++) {
-                ctx.fillStyle = 'rgba(233, 30, 99, 0.15)';
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = Math.random() * 15 + 5;
+                this.speedX = Math.random() * 6 - 3;
+                this.speedY = Math.random() * 6 - 3;
+                this.opacity = 1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= 0.01;
+                if (this.size > 0.2) this.size -= 0.1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
                 ctx.beginPath();
-                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, 150, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
-            ctx.globalCompositeOperation = 'destination-out';
         }
 
-        function scratch(e) {
-            if (!drawing) return;
-            const x = e.touches ? e.touches[0].clientX : e.clientX;
-            const y = e.touches ? e.touches[0].clientY : e.clientY;
-            ctx.beginPath();
-            ctx.arc(x, y, 75, 0, Math.PI * 2);
-            ctx.fill();
-            checkDone();
-        }
+        const colors = ['#ff007f', '#00f2ff', '#9d00ff', '#ffee00'];
 
-        let scratchCount = 0;
-        let isCleared = false;
-        function checkDone() {
-            scratchCount++;
-            if (scratchCount > 120 && !isCleared) {
-                isCleared = true;
-                document.getElementById('fever-screen').style.transition = 'opacity 1.5s ease-out';
-                document.getElementById('fever-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('fever-screen').remove();
-                }, 1500);
+        function createSplatter(x, y) {
+            let color = colors[Math.floor(Math.random() * colors.length)];
+            for (let i = 0; i < 15; i++) {
+                particles.push(new Particle(x, y, color));
             }
         }
 
-        canvas.addEventListener('mousedown', () => drawing = true);
-        canvas.addEventListener('mouseup', () => drawing = false);
-        canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('touchstart', () => drawing = true);
-        canvas.addEventListener('touchmove', scratch);
-        window.addEventListener('resize', initScratcher);
-        initScratcher();
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.2)'; // Tail effect
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
 
-        // --- SLIDER LOGIC ---
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 5000);
+        // Interaction
+        window.addEventListener('mousedown', (e) => createSplatter(e.clientX, e.clientY));
+        window.addEventListener('touchstart', (e) => {
+            createSplatter(e.touches[0].clientX, e.touches[0].clientY);
+        });
 
-        // --- MODAL LOGIC ---
-        function openModal() { document.getElementById('loveModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('loveModal').style.display = 'none'; }
+        animate();
+
+        // Modal functions
+        function openModal() { document.getElementById('holiModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('holiModal').style.display = 'none'; }
     </script>
 </body>
-
 </html>
