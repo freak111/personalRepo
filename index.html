@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Beautiful Woman | Women's Day</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+<title>U = QTR | Love Equation</title>
 
 <style>
 
 :root{
---rose:#b76e79;
---pink:#ffd9e3;
---burgundy:#7a1c3f;
---ivory:#f9f6f0;
+--gold:#FFD700;
+--heart:#ff3e6b;
+--bg:#080808;
+--white:rgba(255,255,255,0.95);
 }
 
 *{
@@ -23,149 +21,192 @@ box-sizing:border-box;
 }
 
 body{
-font-family:'Raleway',sans-serif;
-background:var(--ivory);
-color:#333;
-line-height:1.6;
-}
-
-/* HERO */
-
-header{
+background:var(--bg);
+color:var(--white);
+font-family:Courier New, monospace;
 height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
+overflow:hidden;
 text-align:center;
-color:white;
-background:
-linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-url("./beautiful.png");
-background-size:cover;
-background-position:center;
 }
 
-.hero h1{
-font-family:'Playfair Display',serif;
-font-size:70px;
-letter-spacing:2px;
+/* math background */
+
+#math-bg{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+opacity:0.1;
+line-height:2.2;
+padding:20px;
+font-size:0.9rem;
+pointer-events:none;
 }
 
-.hero span{
-display:block;
-color:var(--pink);
-font-size:40px;
+/* floating hearts */
+
+#love-rain{
+position:absolute;
+width:100%;
+height:100%;
+overflow:hidden;
+pointer-events:none;
+}
+
+.floating-heart{
+position:absolute;
+bottom:-20px;
+font-size:18px;
+animation:floatLove linear forwards;
+opacity:0.7;
+}
+
+@keyframes floatLove{
+0%{transform:translateY(0) scale(0.8);opacity:0}
+20%{opacity:1}
+100%{transform:translateY(-110vh) scale(1.4);opacity:0}
+}
+
+/* sparkles */
+
+.sparkle{
+position:absolute;
+color:var(--gold);
+font-size:10px;
+animation:sparkle 2s linear infinite;
+}
+
+@keyframes sparkle{
+0%{opacity:0;transform:scale(0)}
+50%{opacity:1;transform:scale(1.5)}
+100%{opacity:0;transform:scale(0)}
+}
+
+/* main box */
+
+#solve-box{
+z-index:10;
+transition:0.5s;
+}
+
+.status{
+background:#22c55e;
+padding:6px 18px;
+border-radius:50px;
+font-size:0.7rem;
+letter-spacing:3px;
+margin-bottom:20px;
+display:inline-block;
+}
+
+.equation{
+font-size:20vw;
+font-weight:900;
+color:var(--gold);
+text-shadow:0 0 20px rgba(255,215,0,0.3);
+}
+
+.subtext{
+opacity:0.8;
 margin-top:10px;
 }
 
-.hero p{
-margin-top:25px;
-font-size:22px;
-font-family:'Cormorant Garamond',serif;
+/* heart button */
+
+.heart-trigger{
+font-size:90px;
+cursor:pointer;
+margin-top:20px;
+display:inline-block;
+animation:heartBeat 1.2s infinite;
 }
 
-/* SECTION */
-
-section{
-padding:90px 30px;
-max-width:1100px;
-margin:auto;
+@keyframes heartBeat{
+0%{transform:scale(1)}
+25%{transform:scale(1.15)}
+40%{transform:scale(1)}
+60%{transform:scale(1.2)}
+100%{transform:scale(1)}
 }
 
-.section-title{
-text-align:center;
-font-family:'Playfair Display',serif;
-font-size:42px;
-margin-bottom:50px;
-color:var(--burgundy);
+/* reveal */
+
+#reveal-box{
+display:none;
+flex-direction:column;
+align-items:center;
+z-index:20;
 }
 
-/* CARDS */
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:30px;
+.name{
+font-size:13vw;
+font-weight:900;
+opacity:0;
+transform:scale(1.4);
+color:white;
+text-shadow:3px 3px 0px var(--heart);
+animation:glowLove 2s infinite alternate;
 }
 
-.card{
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,.1);
-transition:.4s;
+@keyframes glowLove{
+from{text-shadow:0 0 5px var(--heart)}
+to{text-shadow:0 0 25px var(--heart)}
 }
 
-.card:hover{
-transform:translateY(-10px);
+@keyframes pop{
+to{
+opacity:1;
+transform:scale(1);
+}
 }
 
-.card img{
-width:100%;
-height:338px;
-object-fit:cover;
-}
+/* romantic card */
 
-.card-content{
-padding:25px;
-text-align:center;
-}
-
-.card h3{
-font-family:'Playfair Display',serif;
-color:var(--burgundy);
-margin-bottom:10px;
-}
-
-/* POETRY */
-
-.poetry{
-background:linear-gradient(135deg,#ffe8ef,#fff);
-padding:70px;
+.romantic-card{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+border:1px solid var(--gold);
+padding:30px 20px;
+margin-top:30px;
+max-width:330px;
 border-radius:25px;
-text-align:center;
-font-family:'Cormorant Garamond',serif;
-font-size:24px;
-font-style:italic;
-color:var(--burgundy);
-line-height:1.8;
+opacity:0;
+transform:translateY(30px);
+font-family:Arial;
+animation:jiggleLove 3s infinite ease-in-out;
 }
 
-/* MESSAGE */
-
-.love-message{
-text-align:center;
-margin-top:70px;
-font-size:22px;
-max-width:700px;
-margin-left:auto;
-margin-right:auto;
+@keyframes jiggleLove{
+0%{transform:rotate(0deg)}
+25%{transform:rotate(2deg)}
+50%{transform:rotate(-2deg)}
+75%{transform:rotate(1deg)}
+100%{transform:rotate(0deg)}
 }
 
-/* FOOTER */
-
-footer{
-background:#2d1a1e;
-color:#eee;
-text-align:center;
-padding:70px 30px;
+.romantic-card h3{
+color:var(--gold);
+margin-bottom:15px;
+letter-spacing:2px;
 }
 
-footer h2{
-font-family:'Playfair Display',serif;
-font-size:36px;
-color:var(--rose);
-margin-bottom:20px;
+.romantic-card p{
+font-size:1.1rem;
+line-height:1.6;
 }
 
-.heart{
-font-size:40px;
-animation:beat 1.3s infinite;
-}
-
-@keyframes beat{
-0%,100%{transform:scale(1);}
-50%{transform:scale(1.2);}
+button{
+background:none;
+border:none;
+color:#666;
+margin-top:30px;
+font-size:0.7rem;
+letter-spacing:2px;
+cursor:pointer;
 }
 
 </style>
@@ -173,100 +214,133 @@ animation:beat 1.3s infinite;
 
 <body>
 
-<header>
-<div class="hero">
-<h1>Happy Women's Day</h1>
-<span>To My Beautiful Woman</span>
-<p>You are strength, love, grace and the most precious part of my life.</p>
-</div>
-</header>
-
-
-<section>
-
-<h2 class="section-title">The Woman I Admire</h2>
-
-<div class="cards">
-
-<div class="card">
-<img src="cute.jpg">
-<div class="card-content">
-<h3>Her Strength</h3>
-<p>You face life with courage and determination. Your strength inspires me every day.</p>
-</div>
+<div id="math-bg">
+LOVE² + YOU² = ∞ <br>
+MY_HEART → YOU <br>
+DISTANCE = 0 WHEN YOU SMILE <br>
+U + ME = ∞ <br>
+CHEMISTRY > MATHEMATICS <br>
+YOUR_SMILE = MY_CONSTANT <br>
+HEART_RATE ↑ WHEN YOU NEAR <br>
+LOVE_LIMIT (t→∞) = YOU
 </div>
 
-<div class="card">
-<img src="tred.png">
-<div class="card-content">
-<h3>Her Kind Heart</h3>
-<p>Your kindness and warmth make the world around you more beautiful.</p>
-</div>
-</div>
+<div id="love-rain"></div>
 
-<div class="card">
-<img src="love.png">
-<div class="card-content">
-<h3>Her Beauty</h3>
-<p>Your smile lights up my world and your presence makes my life complete.</p>
-</div>
-</div>
+<div id="solve-box">
+
+<div class="status">LOVE SYSTEM READY</div>
+
+<div class="equation">U = QTR</div>
+
+<div class="subtext">The formula of my heart.</div>
+
+<div class="heart-trigger" onclick="unlockLove()">❤️</div>
 
 </div>
 
-</section>
+<div id="reveal-box">
 
+<div class="name" id="n1">KAJAL</div>
+<div class="name" id="n2">NAMASVI</div>
+<div class="name" id="n3">KAMILA</div>
 
-<section>
+<div class="romantic-card" id="card">
 
-<div class="poetry">
-
-She is like the moon — soft, calm, and glowing with grace.  
-She is like the ocean — deep, powerful, and full of mystery.  
-
-Her smile is sunshine after rain,  
-Her love is the warmth that heals every pain.  
-
-Today and always, I celebrate **you**.
-
-</div>
-
-</section>
-
-
-<section>
-
-<h2 class="section-title">A Message From My Heart</h2>
-
-<div class="love-message">
-
-My love, on this Women's Day I just want you to know how special you are to me.  
-Even when you're not feeling well, you are still the strongest and most beautiful woman in my world.  
-
-Take care of yourself and get well soon.  
-Your happiness means everything to me.
-
-</div>
-
-</section>
-
-
-<footer>
-
-<h2>For You ❤️</h2>
+<h3>My Beautiful Constant</h3>
 
 <p>
-You are not just my love —  
-You are my inspiration, my peace, and my happiness.
+When the world felt silent,
+my heart kept solving the same equation:
 </p>
 
-<div class="heart">❤️</div>
-
-<p style="margin-top:30px;font-size:14px;opacity:.7;">
-Made with love
+<p style="font-size:1.4rem;margin:10px;color:#FFD700;">
+YOU + ME = ∞
 </p>
 
-</footer>
+<p>
+Every variable in my life simplifies to you.
+Your smile resets my universe.
+Your voice is my favorite frequency.
+</p>
+
+<p>
+If love were mathematics,
+you would be my constant,
+my infinity,
+my perfect proof.
+</p>
+
+<p style="margin-top:15px;color:#FFD700;font-weight:bold;">
+I Love You ❤️
+</p>
+
+</div>
+
+<button onclick="location.reload()">CALCULATE FOREVER AGAIN</button>
+
+</div>
+
+<script>
+
+/* floating hearts */
+
+function createHeart(){
+const heart=document.createElement("div");
+heart.className="floating-heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(4+Math.random()*4)+"s";
+document.getElementById("love-rain").appendChild(heart);
+setTimeout(()=>heart.remove(),8000);
+}
+
+setInterval(createHeart,600);
+
+/* sparkles */
+
+function sparkle(){
+const s=document.createElement("div");
+s.className="sparkle";
+s.innerHTML="✨";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),2000);
+}
+
+setInterval(sparkle,800);
+
+/* reveal animation */
+
+function unlockLove(){
+
+const start=document.getElementById("solve-box");
+start.style.opacity="0";
+start.style.transform="translateY(-50px)";
+
+setTimeout(()=>{
+
+start.style.display="none";
+
+const reveal=document.getElementById("reveal-box");
+reveal.style.display="flex";
+
+document.getElementById("n1").style.animation="pop 0.5s forwards 0.2s";
+document.getElementById("n2").style.animation="pop 0.5s forwards 0.5s";
+document.getElementById("n3").style.animation="pop 0.5s forwards 0.8s";
+
+document.getElementById("card").style.animation="pop 0.8s forwards 1.3s";
+
+},500);
+
+if(navigator.vibrate){
+navigator.vibrate([100,40,100,40,200]);
+}
+
+}
+
+</script>
 
 </body>
 </html>
