@@ -1,346 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>U = QTR | Love Equation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Logic of Love | 2026</title>
+    <style>
+        :root {
+            --gold: #FFD700;
+            --wine: #722f37;
+            --heart: #ff3e6b;
+            --chalk: rgba(255, 255, 255, 0.9);
+            --bg: #0d0d0d;
+        }
 
-<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-:root{
---gold:#FFD700;
---heart:#ff3e6b;
---bg:#080808;
---white:rgba(255,255,255,0.95);
-}
+        body {
+            background-color: var(--bg);
+            color: var(--chalk);
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+        /* MATH DECOR BACKGROUND */
+        #bg-pattern {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.1;
+            font-size: 0.8rem;
+            pointer-events: none;
+            padding: 20px;
+            line-height: 2;
+        }
 
-body{
-background:var(--bg);
-color:var(--white);
-font-family:Courier New, monospace;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
-text-align:center;
-}
+        /* ANIMATION CONTAINER */
+        #rhyme-box {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
 
-/* math background */
+        .line-item {
+            font-size: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
 
-#math-bg{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-opacity:0.1;
-line-height:2.2;
-padding:20px;
-font-size:0.9rem;
-pointer-events:none;
-}
+        /* SPECIFIC STYLES */
+        .drawing {
+            height: 2px;
+            width: 0;
+            background: var(--gold);
+            transition: width 1s ease;
+        }
 
-/* floating hearts */
+        .big-text {
+            font-size: 4rem;
+            font-weight: 900;
+            display: block;
+        }
 
-#love-rain{
-position:absolute;
-width:100%;
-height:100%;
-overflow:hidden;
-pointer-events:none;
-}
+        .heart {
+            font-size: 5rem;
+            color: var(--heart);
+            filter: drop-shadow(0 0 15px var(--heart));
+            animation: beat 0.8s infinite alternate;
+        }
 
-.floating-heart{
-position:absolute;
-bottom:-20px;
-font-size:18px;
-animation:floatLove linear forwards;
-opacity:0.7;
-}
+        @keyframes beat {
+            to { transform: scale(1.2); }
+        }
 
-@keyframes floatLove{
-0%{transform:translateY(0) scale(0.8);opacity:0}
-20%{opacity:1}
-100%{transform:translateY(-110vh) scale(1.4);opacity:0}
-}
+        /* ANIMATION CLASSES */
+        .animate-in {
+            animation: fadeIn 0.8s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-/* sparkles */
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.sparkle{
-position:absolute;
-color:var(--gold);
-font-size:10px;
-animation:sparkle 2s linear infinite;
-}
+        .final-reveal {
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
 
-@keyframes sparkle{
-0%{opacity:0;transform:scale(0)}
-50%{opacity:1;transform:scale(1.5)}
-100%{opacity:0;transform:scale(0)}
-}
-
-/* main box */
-
-#solve-box{
-z-index:10;
-transition:0.5s;
-}
-
-.status{
-background:#22c55e;
-padding:6px 18px;
-border-radius:50px;
-font-size:0.7rem;
-letter-spacing:3px;
-margin-bottom:20px;
-display:inline-block;
-}
-
-.equation{
-font-size:20vw;
-font-weight:900;
-color:var(--gold);
-text-shadow:0 0 20px rgba(255,215,0,0.3);
-}
-
-.subtext{
-opacity:0.8;
-margin-top:10px;
-}
-
-/* heart button */
-
-.heart-trigger{
-font-size:90px;
-cursor:pointer;
-margin-top:20px;
-display:inline-block;
-animation:heartBeat 1.2s infinite;
-}
-
-@keyframes heartBeat{
-0%{transform:scale(1)}
-25%{transform:scale(1.15)}
-40%{transform:scale(1)}
-60%{transform:scale(1.2)}
-100%{transform:scale(1)}
-}
-
-/* reveal */
-
-#reveal-box{
-display:none;
-flex-direction:column;
-align-items:center;
-z-index:20;
-}
-
-.name{
-font-size:13vw;
-font-weight:900;
-opacity:0;
-transform:scale(1.4);
-color:white;
-text-shadow:3px 3px 0px var(--heart);
-animation:glowLove 2s infinite alternate;
-}
-
-@keyframes glowLove{
-from{text-shadow:0 0 5px var(--heart)}
-to{text-shadow:0 0 25px var(--heart)}
-}
-
-@keyframes pop{
-to{
-opacity:1;
-transform:scale(1);
-}
-}
-
-/* romantic card */
-
-.romantic-card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(10px);
-border:1px solid var(--gold);
-padding:30px 20px;
-margin-top:30px;
-max-width:330px;
-border-radius:25px;
-opacity:0;
-transform:translateY(30px);
-font-family:Arial;
-animation:jiggleLove 3s infinite ease-in-out;
-}
-
-@keyframes jiggleLove{
-0%{transform:rotate(0deg)}
-25%{transform:rotate(2deg)}
-50%{transform:rotate(-2deg)}
-75%{transform:rotate(1deg)}
-100%{transform:rotate(0deg)}
-}
-
-.romantic-card h3{
-color:var(--gold);
-margin-bottom:15px;
-letter-spacing:2px;
-}
-
-.romantic-card p{
-font-size:1.1rem;
-line-height:1.6;
-}
-
-button{
-background:none;
-border:none;
-color:#666;
-margin-top:30px;
-font-size:0.7rem;
-letter-spacing:2px;
-cursor:pointer;
-}
-
-</style>
+        #replay-btn {
+            margin-top: 40px;
+            background: none;
+            border: 1px solid #333;
+            color: #555;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0;
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="math-bg">
-LOVE² + YOU² = ∞ <br>
-MY_HEART → YOU <br>
-DISTANCE = 0 WHEN YOU SMILE <br>
-U + ME = ∞ <br>
-CHEMISTRY > MATHEMATICS <br>
-YOUR_SMILE = MY_CONSTANT <br>
-HEART_RATE ↑ WHEN YOU NEAR <br>
-LOVE_LIMIT (t→∞) = YOU
-</div>
+    <div id="bg-pattern">
+        y = mx + c <br>
+        KAJAL = CONSTANT <br>
+        NAMASVI = INFINITY <br>
+        KAMILA = ABSOLUTE <br>
+        ∫ Love dx = Everything
+    </div>
 
-<div id="love-rain"></div>
+    <div id="rhyme-box">
+        <div class="line-item" id="item1">
+            <div id="draw-line" class="drawing"></div>
+            <p>This is a line.</p>
+        </div>
 
-<div id="solve-box">
+        <div class="line-item" id="item2">
+            <span class="big-text" style="color: var(--gold);">9</span>
+            <p>This is nine.</p>
+        </div>
 
-<div class="status">LOVE SYSTEM READY</div>
+        <div class="line-item" id="item3">
+            <span class="big-text" style="color: var(--wine);">🍷</span>
+            <p>This is wine.</p>
+        </div>
 
-<div class="equation">U = QTR</div>
+        <div class="line-item" id="item4">
+            <span class="heart">❤️</span>
+            <p class="final-reveal">And you are mine.</p>
+        </div>
 
-<div class="subtext">The formula of my heart.</div>
+        <button id="replay-btn" onclick="location.reload()">Replay Logic</button>
+    </div>
 
-<div class="heart-trigger" onclick="unlockLove()">❤️</div>
+    <script>
+        window.onload = () => {
+            const sequence = [
+                { id: 'item1', delay: 500, callback: () => document.getElementById('draw-line').style.width = '150px' },
+                { id: 'item2', delay: 2000 },
+                { id: 'item3', delay: 3500 },
+                { id: 'item4', delay: 5000 },
+                { id: 'replay-btn', delay: 7000 }
+            ];
 
-</div>
-
-<div id="reveal-box">
-
-<div class="name" id="n1">KAAJAL</div>
-<div class="name" id="n2">NAMASVI</div>
-<div class="name" id="n3">KAMILA</div>
-
-<div class="romantic-card" id="card">
-
-<h3>My Beautiful Constant</h3>
-
-<p>
-When the world felt silent,
-my heart kept solving the same equation:
-</p>
-
-<p style="font-size:1.4rem;margin:10px;color:#FFD700;">
-YOU + ME = ∞
-</p>
-
-<p>
-Every variable in my life simplifies to you.
-Your smile resets my universe.
-Your voice is my favorite frequency.
-</p>
-
-<p>
-If love were mathematics,
-you would be my constant,
-my infinity,
-my perfect proof.
-</p>
-
-<p style="margin-top:15px;color:#FFD700;font-weight:bold;">
-I Love You ❤️
-</p>
-
-</div>
-
-<button onclick="location.reload()">CALCULATE FOREVER AGAIN</button>
-
-</div>
-
-<script>
-
-/* floating hearts */
-
-function createHeart(){
-const heart=document.createElement("div");
-heart.className="floating-heart";
-heart.innerHTML="❤️";
-heart.style.left=Math.random()*100+"vw";
-heart.style.animationDuration=(4+Math.random()*4)+"s";
-document.getElementById("love-rain").appendChild(heart);
-setTimeout(()=>heart.remove(),8000);
-}
-
-setInterval(createHeart,600);
-
-/* sparkles */
-
-function sparkle(){
-const s=document.createElement("div");
-s.className="sparkle";
-s.innerHTML="✨";
-s.style.left=Math.random()*100+"vw";
-s.style.top=Math.random()*100+"vh";
-document.body.appendChild(s);
-setTimeout(()=>s.remove(),2000);
-}
-
-setInterval(sparkle,800);
-
-/* reveal animation */
-
-function unlockLove(){
-
-const start=document.getElementById("solve-box");
-start.style.opacity="0";
-start.style.transform="translateY(-50px)";
-
-setTimeout(()=>{
-
-start.style.display="none";
-
-const reveal=document.getElementById("reveal-box");
-reveal.style.display="flex";
-
-document.getElementById("n1").style.animation="pop 0.5s forwards 0.2s";
-document.getElementById("n2").style.animation="pop 0.5s forwards 0.5s";
-document.getElementById("n3").style.animation="pop 0.5s forwards 0.8s";
-
-document.getElementById("card").style.animation="pop 0.8s forwards 1.3s";
-
-},500);
-
-if(navigator.vibrate){
-navigator.vibrate([100,40,100,40,200]);
-}
-
-}
-
-</script>
-
+            sequence.forEach(step => {
+                setTimeout(() => {
+                    const el = document.getElementById(step.id);
+                    el.classList.add('animate-in');
+                    if(step.callback) step.callback();
+                    
+                    // Small vibrate on each reveal
+                    if(window.navigator.vibrate) window.navigator.vibrate(20);
+                }, step.delay);
+            });
+        };
+    </script>
 </body>
 </html>
