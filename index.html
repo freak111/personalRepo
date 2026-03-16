@@ -1,173 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Logic of Love | 2026</title>
-    <style>
-        :root {
-            --gold: #FFD700;
-            --wine: #722f37;
-            --heart: #ff3e6b;
-            --chalk: rgba(255, 255, 255, 0.9);
-            --bg: #0d0d0d;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Perfect View</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+<style>
 
-        body {
-            background-color: var(--bg);
-            color: var(--chalk);
-            font-family: 'Courier New', Courier, monospace;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            text-align: center;
-        }
+:root{
+--gold:#FFD700;
+--heart:#ff3e6b;
+--bg:#080808;
+}
 
-        /* MATH DECOR BACKGROUND */
-        #bg-pattern {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0.1;
-            font-size: 0.8rem;
-            pointer-events: none;
-            padding: 20px;
-            line-height: 2;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-        /* ANIMATION CONTAINER */
-        #rhyme-box {
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
+body{
+background:linear-gradient(180deg,#140814,#080808);
+color:white;
+font-family:Georgia,serif;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+overflow:hidden;
+text-align:center;
+padding:20px;
+}
 
-        .line-item {
-            font-size: 1.5rem;
-            opacity: 0;
-            transform: translateY(20px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+/* floating hearts */
 
-        /* SPECIFIC STYLES */
-        .drawing {
-            height: 2px;
-            width: 0;
-            background: var(--gold);
-            transition: width 1s ease;
-        }
+#heart-rain{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+}
 
-        .big-text {
-            font-size: 4rem;
-            font-weight: 900;
-            display: block;
-        }
+.heart{
+position:absolute;
+bottom:-20px;
+font-size:16px;
+animation:floatHeart linear forwards;
+opacity:.7;
+}
 
-        .heart {
-            font-size: 5rem;
-            color: var(--heart);
-            filter: drop-shadow(0 0 15px var(--heart));
-            animation: beat 0.8s infinite alternate;
-        }
+@keyframes floatHeart{
+0%{transform:translateY(0) scale(.8);opacity:0}
+20%{opacity:1}
+100%{transform:translateY(-110vh) scale(1.4);opacity:0}
+}
 
-        @keyframes beat {
-            to { transform: scale(1.2); }
-        }
+/* header */
 
-        /* ANIMATION CLASSES */
-        .animate-in {
-            animation: fadeIn 0.8s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+.header h1{
+font-size:14px;
+letter-spacing:4px;
+color:var(--gold);
+text-transform:uppercase;
+}
 
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
+.header p{
+font-size:12px;
+opacity:.6;
+margin-top:8px;
+}
 
-        .final-reveal {
-            font-size: 2.5rem;
-            color: var(--gold);
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 10px;
-        }
+/* puzzle */
 
-        #replay-btn {
-            margin-top: 40px;
-            background: none;
-            border: 1px solid #333;
-            color: #555;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            opacity: 0;
-        }
-    </style>
+#puzzle-container{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:25px;
+max-width:260px;
+}
+
+.box{
+height:110px;
+background:#151515;
+border-radius:18px;
+border:1px solid #333;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:26px;
+cursor:pointer;
+transition:.4s;
+}
+
+.box:active{
+transform:scale(.95);
+}
+
+.box.revealed{
+background:rgba(255,215,0,.05);
+border:1px solid var(--gold);
+color:var(--gold);
+font-size:15px;
+font-weight:bold;
+}
+
+/* reveal overlay */
+
+#reveal-overlay{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(180deg,#140814,#050505);
+z-index:100;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+padding:20px;
+animation:fadeIn 1s forwards;
+}
+
+/* heart */
+
+.glow-heart{
+font-size:60px;
+margin-bottom:20px;
+filter:drop-shadow(0 0 15px var(--heart));
+animation:pulse 1.3s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
+}
+
+/* romantic card */
+
+.love-card{
+
+background:rgba(255,255,255,.07);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,215,0,.3);
+border-radius:22px;
+
+padding:22px 18px;
+max-width:320px;
+
+box-shadow:0 15px 30px rgba(0,0,0,.6);
+
+animation:cardPop .9s ease forwards;
+}
+
+.love-card h3{
+color:var(--gold);
+margin-bottom:15px;
+letter-spacing:1px;
+}
+
+.shayari{
+font-size:15px;
+line-height:1.8;
+color:#ffd87a;
+font-style:italic;
+margin-bottom:18px;
+}
+
+.quote{
+font-size:14px;
+line-height:1.6;
+opacity:.9;
+}
+
+.reset{
+margin-top:30px;
+font-size:11px;
+letter-spacing:2px;
+opacity:.4;
+cursor:pointer;
+}
+
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
+}
+
+@keyframes cardPop{
+from{transform:translateY(30px);opacity:0}
+to{transform:translateY(0);opacity:1}
+}
+
+/* sparkles */
+
+.sparkle{
+position:absolute;
+font-size:10px;
+color:var(--gold);
+animation:sparkle 2s linear infinite;
+}
+
+@keyframes sparkle{
+0%{opacity:0;transform:scale(0)}
+50%{opacity:1;transform:scale(1.4)}
+100%{opacity:0;transform:scale(0)}
+}
+
+</style>
 </head>
+
 <body>
 
-    <div id="bg-pattern">
-        y = mx + c <br>
-        KAJAL = CONSTANT <br>
-        NAMASVI = INFINITY <br>
-        KAMILA = ABSOLUTE <br>
-        ∫ Love dx = Everything
-    </div>
+<div id="heart-rain"></div>
 
-    <div id="rhyme-box">
-        <div class="line-item" id="item1">
-            <div id="draw-line" class="drawing"></div>
-            <p>This is a line.</p>
-        </div>
+<div id="game-zone">
 
-        <div class="line-item" id="item2">
-            <span class="big-text" style="color: var(--gold);">9</span>
-            <p>This is nine.</p>
-        </div>
+<div class="header">
+<h1>The Beauty Code</h1>
+<p>Tap the boxes to unlock the truth</p>
+</div>
 
-        <div class="line-item" id="item3">
-            <span class="big-text" style="color: var(--wine);">🍷</span>
-            <p>This is wine.</p>
-        </div>
+<div id="puzzle-container">
+<div class="box" onclick="reveal(this,'TRADITIONAL')">🪷</div>
+<div class="box" onclick="reveal(this,'LOOKS')">✨</div>
+<div class="box" onclick="reveal(this,'BEST')">💄</div>
+<div class="box" onclick="reveal(this,'ON YOU')">🥻</div>
+</div>
 
-        <div class="line-item" id="item4">
-            <span class="heart">❤️</span>
-            <p class="final-reveal">And you are mine.</p>
-        </div>
+</div>
 
-        <button id="replay-btn" onclick="location.reload()">Replay Logic</button>
-    </div>
+<div id="reveal-overlay">
 
-    <script>
-        window.onload = () => {
-            const sequence = [
-                { id: 'item1', delay: 500, callback: () => document.getElementById('draw-line').style.width = '150px' },
-                { id: 'item2', delay: 2000 },
-                { id: 'item3', delay: 3500 },
-                { id: 'item4', delay: 5000 },
-                { id: 'replay-btn', delay: 7000 }
-            ];
+<div class="glow-heart">❤️</div>
 
-            sequence.forEach(step => {
-                setTimeout(() => {
-                    const el = document.getElementById(step.id);
-                    el.classList.add('animate-in');
-                    if(step.callback) step.callback();
-                    
-                    // Small vibrate on each reveal
-                    if(window.navigator.vibrate) window.navigator.vibrate(20);
-                }, step.delay);
-            });
-        };
-    </script>
+<div class="love-card">
+
+<h3>For You</h3>
+
+<div class="shayari">
+
+Saree ke rang ho ya tera muskurana,<br>
+Dono se mushkil ho jata hai sambhal pana.<br><br>
+
+Jab pehanti ho tum woh traditional andaaz,<br>
+Lagta hai jaise ruk gaya ho waqt ka saaz.<br><br>
+
+Sach kahun… meri nazar ka ek hi view hai,<br>
+Sabse khoobsurat **tum hi tum ho.**
+
+</div>
+
+<div class="quote">
+
+Just like this puzzle,<br>
+my life slowly reveals one truth —<br><br>
+
+No matter what you wear,<br>
+no matter where you are,<br>
+**you will always be my favorite view.**
+
+</div>
+
+</div>
+
+<div class="reset" onclick="location.reload()">
+RESET PUZZLE
+</div>
+
+</div>
+
+<script>
+
+let count=0;
+
+function reveal(el,word){
+
+if(el.classList.contains("revealed")) return;
+
+el.innerHTML=word;
+el.classList.add("revealed");
+
+count++;
+
+if(navigator.vibrate) navigator.vibrate(30);
+
+if(count===4){
+
+setTimeout(()=>{
+
+document.getElementById("game-zone").style.opacity="0";
+
+setTimeout(()=>{
+
+document.getElementById("reveal-overlay").style.display="flex";
+
+},400);
+
+},700);
+
+}
+
+}
+
+/* floating hearts */
+
+function createHeart(){
+
+const heart=document.createElement("div");
+
+heart.className="heart";
+heart.innerHTML="❤️";
+
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(4+Math.random()*4)+"s";
+
+document.getElementById("heart-rain").appendChild(heart);
+
+setTimeout(()=>heart.remove(),8000);
+
+}
+
+setInterval(createHeart,700);
+
+/* sparkles */
+
+function sparkle(){
+
+const s=document.createElement("div");
+
+s.className="sparkle";
+s.innerHTML="✨";
+
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+
+document.body.appendChild(s);
+
+setTimeout(()=>s.remove(),2000);
+
+}
+
+setInterval(sparkle,900);
+
+</script>
+
 </body>
 </html>
