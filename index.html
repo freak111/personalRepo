@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Perfect View</title>
+<title>Features of Grace</title>
 
 <style>
 
 :root{
---gold:#FFD700;
---heart:#ff3e6b;
 --bg:#080808;
+--gold:#FFD700;
+--rose:#ff4d6d;
+--soft:#ff8fa3;
+--text:#eee;
 }
 
 *{
@@ -20,195 +22,170 @@ box-sizing:border-box;
 }
 
 body{
-background:linear-gradient(180deg,#140814,#080808);
-color:white;
-font-family:Georgia,serif;
+background:radial-gradient(circle at center,#1a0a12,#080808);
+color:var(--text);
+font-family:'Helvetica Neue',sans-serif;
 min-height:100vh;
 display:flex;
-align-items:center;
-justify-content:center;
 flex-direction:column;
-overflow:hidden;
-text-align:center;
-padding:20px;
+align-items:center;
+padding:40px 20px;
+overflow-x:hidden;
 }
 
 /* floating hearts */
 
-#heart-rain{
-position:absolute;
-top:0;
-left:0;
+#hearts{
+position:fixed;
 width:100%;
 height:100%;
+top:0;
+left:0;
 pointer-events:none;
+z-index:1;
 }
 
 .heart{
 position:absolute;
 bottom:-20px;
 font-size:16px;
-animation:floatHeart linear forwards;
+animation:floatUp linear forwards;
 opacity:.7;
 }
 
-@keyframes floatHeart{
+@keyframes floatUp{
 0%{transform:translateY(0) scale(.8);opacity:0}
 20%{opacity:1}
-100%{transform:translateY(-110vh) scale(1.4);opacity:0}
+100%{transform:translateY(-110vh) scale(1.5);opacity:0}
 }
 
 /* header */
 
-.header h1{
-font-size:14px;
-letter-spacing:4px;
-color:var(--gold);
-text-transform:uppercase;
+header{
+text-align:center;
+margin-bottom:40px;
+z-index:2;
 }
 
-.header p{
-font-size:12px;
+header h1{
+letter-spacing:5px;
+color:var(--gold);
+font-size:1.6rem;
+}
+
+header p{
 opacity:.6;
+font-style:italic;
 margin-top:8px;
 }
 
-/* puzzle */
+/* grid */
 
-#puzzle-container{
+.grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:12px;
-margin-top:25px;
-max-width:260px;
-}
-
-.box{
-height:110px;
-background:#151515;
-border-radius:18px;
-border:1px solid #333;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:26px;
-cursor:pointer;
-transition:.4s;
-}
-
-.box:active{
-transform:scale(.95);
-}
-
-.box.revealed{
-background:rgba(255,215,0,.05);
-border:1px solid var(--gold);
-color:var(--gold);
-font-size:15px;
-font-weight:bold;
-}
-
-/* reveal overlay */
-
-#reveal-overlay{
-display:none;
-position:fixed;
-top:0;
-left:0;
+gap:18px;
+max-width:600px;
 width:100%;
-height:100%;
-background:linear-gradient(180deg,#140814,#050505);
-z-index:100;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-padding:20px;
-animation:fadeIn 1s forwards;
+z-index:2;
 }
 
-/* heart */
+/* card */
 
-.glow-heart{
-font-size:60px;
-margin-bottom:20px;
-filter:drop-shadow(0 0 15px var(--heart));
-animation:pulse 1.3s infinite;
+.card{
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(12px);
+border-radius:20px;
+padding:25px 15px;
+text-align:center;
+transition:.4s;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 10px 25px rgba(0,0,0,.6);
+cursor:pointer;
+position:relative;
+overflow:hidden;
 }
 
-@keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.2)}
-100%{transform:scale(1)}
+/* glow */
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 0 25px rgba(255,77,109,.3);
+border-color:var(--rose);
 }
 
-/* romantic card */
+/* heartbeat glow */
 
-.love-card{
-
-background:rgba(255,255,255,.07);
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,215,0,.3);
-border-radius:22px;
-
-padding:22px 18px;
-max-width:320px;
-
-box-shadow:0 15px 30px rgba(0,0,0,.6);
-
-animation:cardPop .9s ease forwards;
+@keyframes heartbeat{
+0%{box-shadow:0 0 0 rgba(255,77,109,.2);}
+50%{box-shadow:0 0 25px rgba(255,77,109,.5);}
+100%{box-shadow:0 0 0 rgba(255,77,109,.2);}
 }
 
-.love-card h3{
-color:var(--gold);
-margin-bottom:15px;
-letter-spacing:1px;
+.card.active{
+animation:heartbeat 1.5s infinite;
 }
 
-.shayari{
-font-size:15px;
-line-height:1.8;
-color:#ffd87a;
-font-style:italic;
-margin-bottom:18px;
+/* icon */
+
+.icon{
+font-size:40px;
+margin-bottom:10px;
 }
 
-.quote{
+/* title */
+
+.title{
+color:var(--soft);
+letter-spacing:2px;
+font-size:13px;
+margin-bottom:8px;
+}
+
+/* rhyme */
+
+.rhyme{
+font-family:Georgia,serif;
 font-size:14px;
 line-height:1.6;
-opacity:.9;
+opacity:0;
+max-height:0;
+transition:.4s;
+overflow:hidden;
+border-top:1px solid rgba(255,255,255,.1);
+margin-top:0;
+padding-top:0;
 }
 
-.reset{
-margin-top:30px;
-font-size:11px;
-letter-spacing:2px;
-opacity:.4;
-cursor:pointer;
+.card.active .rhyme,
+.card:hover .rhyme{
+opacity:1;
+max-height:120px;
+margin-top:10px;
+padding-top:10px;
 }
 
-@keyframes fadeIn{
-from{opacity:0}
-to{opacity:1}
-}
-
-@keyframes cardPop{
-from{transform:translateY(30px);opacity:0}
-to{transform:translateY(0);opacity:1}
-}
-
-/* sparkles */
+/* sparkle */
 
 .sparkle{
 position:absolute;
 font-size:10px;
 color:var(--gold);
-animation:sparkle 2s linear infinite;
+animation:sparkle 2s infinite;
 }
 
 @keyframes sparkle{
 0%{opacity:0;transform:scale(0)}
-50%{opacity:1;transform:scale(1.4)}
+50%{opacity:1;transform:scale(1.5)}
 100%{opacity:0;transform:scale(0)}
+}
+
+/* mobile */
+
+@media(max-width:480px){
+.grid{
+grid-template-columns:1fr;
+}
 }
 
 </style>
@@ -216,135 +193,118 @@ animation:sparkle 2s linear infinite;
 
 <body>
 
-<div id="heart-rain"></div>
+<div id="hearts"></div>
 
-<div id="game-zone">
+<header>
+<h1>Your Magic</h1>
+<p>Every little detail of you… drives me crazy</p>
+</header>
 
-<div class="header">
-<h1>The Beauty Code</h1>
-<p>Tap the boxes to unlock the truth</p>
+<div class="grid">
+
+<div class="card" onclick="toggle(this)">
+<div class="icon">😊</div>
+<div class="title">Smile</div>
+<div class="rhyme">
+"When your smile softly appears,<br>
+It melts my doubts, my fears…<br>
+Like sunshine touching skin so light,<br>
+It makes my whole world feel right."
+</div>
 </div>
 
-<div id="puzzle-container">
-<div class="box" onclick="reveal(this,'TRADITIONAL')">🪷</div>
-<div class="box" onclick="reveal(this,'LOOKS')">✨</div>
-<div class="box" onclick="reveal(this,'BEST')">💄</div>
-<div class="box" onclick="reveal(this,'ON YOU')">🥻</div>
+<div class="card" onclick="toggle(this)">
+<div class="icon">👁️</div>
+<div class="title">Eyes</div>
+<div class="rhyme">
+"In your eyes I lose my way,<br>
+A place where I forever stay…<br>
+One look from you, and I confess,<br>
+I’m deeply lost… in your tenderness."
+</div>
 </div>
 
+<div class="card" onclick="toggle(this)">
+<div class="icon">✨</div>
+<div class="title">Beauty</div>
+<div class="rhyme">
+"Not just beauty that meets the eye,<br>
+But something deeper I can’t deny…<br>
+A glow that no words can define,<br>
+A silent magic… that’s only mine."
+</div>
 </div>
 
-<div id="reveal-overlay">
-
-<div class="glow-heart">❤️</div>
-
-<div class="love-card">
-
-<h3>For You</h3>
-
-<div class="shayari">
-
-Saree ke rang ho ya tera muskurana,<br>
-Dono se mushkil ho jata hai sambhal pana.<br><br>
-
-Jab pehanti ho tum woh traditional andaaz,<br>
-Lagta hai jaise ruk gaya ho waqt ka saaz.<br><br>
-
-Sach kahun… meri nazar ka ek hi view hai,<br>
-Sabse khoobsurat **tum hi tum ho.**
-
+<div class="card" onclick="toggle(this)">
+<div class="icon">🤝</div>
+<div class="title">Care</div>
+<div class="rhyme">
+"The way you care, so soft, so true,<br>
+Feels like a world I always knew…<br>
+In your warmth I gently fall,<br>
+Like I’ve finally found it all."
+</div>
 </div>
 
-<div class="quote">
-
-Just like this puzzle,<br>
-my life slowly reveals one truth —<br><br>
-
-No matter what you wear,<br>
-no matter where you are,<br>
-**you will always be my favorite view.**
-
+<div class="card" onclick="toggle(this)">
+<div class="icon">🧸</div>
+<div class="title">Adorable</div>
+<div class="rhyme">
+"Every little thing you do,<br>
+Feels so perfect, feels so you…<br>
+From your laugh to how you stare,<br>
+You’re just too cute… beyond compare."
+</div>
 </div>
 
+<div class="card" onclick="toggle(this)">
+<div class="icon">💖</div>
+<div class="title">That Mole</div>
+<div class="rhyme">
+"That tiny mark upon your cheek,<br>
+Makes your beauty softly peak…<br>
+A little detail, yet so divine,<br>
+Like it was placed… just to be mine."
 </div>
-
-<div class="reset" onclick="location.reload()">
-RESET PUZZLE
 </div>
 
 </div>
 
 <script>
 
-let count=0;
+function toggle(el){
+const active=document.querySelector('.card.active');
+if(active && active!==el) active.classList.remove('active');
 
-function reveal(el,word){
+el.classList.toggle('active');
 
-if(el.classList.contains("revealed")) return;
-
-el.innerHTML=word;
-el.classList.add("revealed");
-
-count++;
-
-if(navigator.vibrate) navigator.vibrate(30);
-
-if(count===4){
-
-setTimeout(()=>{
-
-document.getElementById("game-zone").style.opacity="0";
-
-setTimeout(()=>{
-
-document.getElementById("reveal-overlay").style.display="flex";
-
-},400);
-
-},700);
-
+if(navigator.vibrate) navigator.vibrate(20);
 }
 
-}
-
-/* floating hearts */
+/* hearts */
 
 function createHeart(){
-
-const heart=document.createElement("div");
-
-heart.className="heart";
-heart.innerHTML="❤️";
-
-heart.style.left=Math.random()*100+"vw";
-heart.style.animationDuration=(4+Math.random()*4)+"s";
-
-document.getElementById("heart-rain").appendChild(heart);
-
-setTimeout(()=>heart.remove(),8000);
-
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(4+Math.random()*4)+"s";
+document.getElementById("hearts").appendChild(h);
+setTimeout(()=>h.remove(),8000);
 }
-
 setInterval(createHeart,700);
 
 /* sparkles */
 
 function sparkle(){
-
 const s=document.createElement("div");
-
 s.className="sparkle";
 s.innerHTML="✨";
-
 s.style.left=Math.random()*100+"vw";
 s.style.top=Math.random()*100+"vh";
-
 document.body.appendChild(s);
-
 setTimeout(()=>s.remove(),2000);
-
 }
-
 setInterval(sparkle,900);
 
 </script>
