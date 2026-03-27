@@ -1,240 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My North Star | 2026</title>
-    <style>
-        :root {
-            --gold: #FFD700;
-            --space: #050508;
-            --star-glow: rgba(255, 215, 0, 0.6);
-            --accent-pink: #ffafcc;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Good Night ❤️</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+<style>
 
-        body {
-            background-color: var(--space);
-            color: white;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            height: 100vh;
-            overflow: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+:root{
+--bg1:#0b0c2a;
+--bg2:#1a1b4b;
+--moon:#ffd700;
+--text:#ffffff;
+--pink:#ff6b9a;
+}
 
-        /* CELESTIAL BACKGROUND */
-        #canvas-stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #050508 100%);
-            z-index: -1;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-        /* THE FLYING STAR */
-        #star-trigger {
-            width: 80px;
-            height: 80px;
-            cursor: pointer;
-            z-index: 10;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: flyIn 2s ease-out forwards, pulse 1.5s infinite 2s;
-            opacity: 0;
-        }
+body{
+background:linear-gradient(180deg,var(--bg1),var(--bg2));
+color:var(--text);
+font-family:Georgia,serif;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+overflow:hidden;
+}
 
-        .star-core {
-            font-size: 3rem;
-            filter: drop-shadow(0 0 20px var(--gold));
-        }
+/* stars */
 
-        @keyframes flyIn {
-            0% { transform: translate(-200%, -200%) scale(0); opacity: 0; }
-            100% { transform: translate(0, 0) scale(1); opacity: 1; }
-        }
+#stars{
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+}
 
-        @keyframes pulse {
-            0% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.2); filter: brightness(1.5); }
-            100% { transform: scale(1); filter: brightness(1); }
-        }
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+opacity:.7;
+animation:twinkle 2s infinite alternate;
+}
 
-        /* BURST EFFECT */
-        .burst-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: white;
-            opacity: 0;
-            pointer-events: none;
-        }
+@keyframes twinkle{
+from{opacity:.2}
+to{opacity:1}
+}
 
-        /* MESSAGE CONTAINER */
-        #celestial-message {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            z-index: 20;
-            padding: 20px;
-            animation: fadeIn 1.5s forwards;
-        }
+/* moon */
 
-        .trait-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+.moon{
+font-size:60px;
+margin-bottom:15px;
+filter:drop-shadow(0 0 20px var(--moon));
+animation:float 3s infinite ease-in-out;
+}
 
-        .trait {
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 8px 15px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50px;
-            background: rgba(255,255,255,0.05);
-            color: var(--accent-pink);
-        }
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+100%{transform:translateY(0)}
+}
 
-        .rhyme-box {
-            font-family: 'Georgia', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: var(--gold);
-            max-width: 320px;
-        }
+/* card */
 
-        .uiee-reveal {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-top: 20px;
-            color: white;
-            text-shadow: 0 0 20px var(--gold);
-            animation: bounce 0.6s infinite alternate;
-        }
+.card{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+padding:25px 20px;
+border-radius:20px;
+max-width:320px;
+box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+/* text */
 
-        .mole-dot { width: 5px; height: 5px; background: #000; border-radius: 50%; display: inline-block; margin-left: 4px; border: 1px solid #444; }
-    </style>
+h1{
+font-size:22px;
+margin-bottom:10px;
+color:var(--moon);
+}
+
+.message{
+font-size:15px;
+line-height:1.7;
+margin-top:10px;
+}
+
+/* heart */
+
+.heart{
+font-size:30px;
+margin-top:15px;
+animation:pulse 1.3s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
+}
+
+/* floating hearts */
+
+.float-heart{
+position:absolute;
+bottom:-20px;
+font-size:14px;
+animation:rise 6s linear forwards;
+}
+
+@keyframes rise{
+0%{transform:translateY(0);opacity:0}
+20%{opacity:1}
+100%{transform:translateY(-110vh);opacity:0}
+}
+
+</style>
 </head>
+
 <body>
 
-    <div id="canvas-stars"></div>
+<div id="stars"></div>
 
-    <div id="star-trigger" onclick="burst()">
-        <span class="star-core">⭐</span>
-        <p style="position: absolute; bottom: -40px; width: 150px; font-size: 0.7rem; opacity: 0.6; letter-spacing: 2px;">TAP THE STAR</p>
-    </div>
+<div class="card">
 
-    <div id="celestial-message">
-        <div class="trait-cloud">
-            <span class="trait">Your Smile 😊</span>
-            <span class="trait">Those Eyes 👁️</span>
-            <span class="trait">Beautiful ✨</span>
-            <span class="trait">Pure Care 🫂</span>
-            <span class="trait">Adorable 🧸</span>
-            <span class="trait">That Mole <span class="mole-dot"></span></span>
-        </div>
+<div class="moon">🌙</div>
 
-        <div class="rhyme-box">
-        
-            System Alert 🚨<br><br>
-        
-            Girlfriend is angry 😡<br>
-            Boyfriend is scared 😭<br><br>
-        
-            Doctor says:<br>
-            "Only solution is hugs + kisses + sorry unlimited times" 💋<br><br>
-        
-            Aaj Sukrawaar hai…<br>
-            Tu gussa hai… ye atyachaar hai 😭<br><br>
-        
-            Sach bolu…<br>
-            Duniya ka sabse dangerous moment kya hota hai?<br><br>
-        
-            Jab meri cute si girlfriend gussa ho jaati hai 😶‍🌫️💔<br><br>
-        
-            Aur sabse painful kya hota hai?<br><br>
-        
-            👉 Jab wo mujhe ignore karti hai 🥲<br><br>
-        
-            Please maan jao na…<br>
-            Main sudhar jaunga (thoda sa 🤏) 😌💖
-        </div>
+<h1>Good Night My Love</h1>
 
-        <div class="uiee-reveal">UIEE! ❤️</div>
+<div class="message">
 
-        <p style="margin-top: 40px; font-size: 0.7rem; opacity: 0.4; letter-spacing: 3px;">MY EVERYTHING</p>
-    </div>
+As the night wraps the world in silence,<br>
+I just want you to know…<br><br>
 
-    <script>
-        function burst() {
-            const star = document.getElementById('star-trigger');
-            const message = document.getElementById('celestial-message');
-            
-            // Vibration
-            if (window.navigator.vibrate) window.navigator.vibrate([50, 30, 100]);
+No matter how far or close we are,<br>
+you’re always in my heart 💖<br><br>
 
-            // Create particle burst effect
-            for (let i = 0; i < 20; i++) {
-                createParticle();
-            }
+Sleep peacefully, dream beautifully,<br>
+and wake up with that cute smile I love 😊<br><br>
 
-            // Hide star, show message
-            star.style.display = 'none';
-            message.style.display = 'flex';
-        }
+Good night… my favorite person 🌙
 
-        function createParticle() {
-            const p = document.createElement('div');
-            p.className = 'burst-circle';
-            const size = Math.random() * 10 + 5 + 'px';
-            p.style.width = size;
-            p.style.height = size;
-            p.style.left = '50%';
-            p.style.top = '50%';
-            p.style.background = Math.random() > 0.5 ? '#FFD700' : '#ffffff';
-            
-            document.body.appendChild(p);
+</div>
 
-            const destinationX = (Math.random() - 0.5) * 500;
-            const destinationY = (Math.random() - 0.5) * 500;
+<div class="heart">❤️</div>
 
-            p.animate([
-                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
-                { transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, opacity: 0 }
-            ], {
-                duration: 1000 + Math.random() * 1000,
-                easing: 'cubic-bezier(0, .9, .57, 1)',
-                fill: 'forwards'
-            });
+</div>
 
-            setTimeout(() => p.remove(), 2000);
-        }
+<script>
 
-        // Background Star Generation
-        const bg = document.getElementById('canvas-stars');
-        for (let i = 0; i < 150; i++) {
-            const s = document.createElement('div');
-            s.style.position = 'absolute';
-            s.style.background = 'white';
-            s.style.width = Math.random() * 2 + 'px';
-            s.style.height = s.style.width;
-            s.style.left = Math.random() * 100 + '%';
-            s.style.top = Math.random() * 100 + '%';
-            s.style.opacity = Math.random();
-            s.style.borderRadius = '50%';
-            bg.appendChild(s);
-        }
-    </script>
+/* create stars */
+
+for(let i=0;i<80;i++){
+let s=document.createElement("div");
+s.className="star";
+s.style.left=Math.random()*100+"%";
+s.style.top=Math.random()*100+"%";
+s.style.animationDuration=(1+Math.random()*2)+"s";
+document.getElementById("stars").appendChild(s);
+}
+
+/* floating hearts */
+
+function heart(){
+let h=document.createElement("div");
+h.className="float-heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+}
+
+setInterval(heart,1000);
+
+</script>
+
 </body>
 </html>
