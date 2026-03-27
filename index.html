@@ -1,313 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Features of Grace</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My North Star | 2026</title>
+    <style>
+        :root {
+            --gold: #FFD700;
+            --space: #050508;
+            --star-glow: rgba(255, 215, 0, 0.6);
+            --accent-pink: #ffafcc;
+        }
 
-<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-:root{
---bg:#080808;
---gold:#FFD700;
---rose:#ff4d6d;
---soft:#ff8fa3;
---text:#eee;
-}
+        body {
+            background-color: var(--space);
+            color: white;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+        /* CELESTIAL BACKGROUND */
+        #canvas-stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #050508 100%);
+            z-index: -1;
+        }
 
-body{
-background:radial-gradient(circle at center,#1a0a12,#080808);
-color:var(--text);
-font-family:'Helvetica Neue',sans-serif;
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:40px 20px;
-overflow-x:hidden;
-}
+        /* THE FLYING STAR */
+        #star-trigger {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            z-index: 10;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: flyIn 2s ease-out forwards, pulse 1.5s infinite 2s;
+            opacity: 0;
+        }
 
-/* floating hearts */
+        .star-core {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 20px var(--gold));
+        }
 
-#hearts{
-position:fixed;
-width:100%;
-height:100%;
-top:0;
-left:0;
-pointer-events:none;
-z-index:1;
-}
+        @keyframes flyIn {
+            0% { transform: translate(-200%, -200%) scale(0); opacity: 0; }
+            100% { transform: translate(0, 0) scale(1); opacity: 1; }
+        }
 
-.heart{
-position:absolute;
-bottom:-20px;
-font-size:16px;
-animation:floatUp linear forwards;
-opacity:.7;
-}
+        @keyframes pulse {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.2); filter: brightness(1.5); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
 
-@keyframes floatUp{
-0%{transform:translateY(0) scale(.8);opacity:0}
-20%{opacity:1}
-100%{transform:translateY(-110vh) scale(1.5);opacity:0}
-}
+        /* BURST EFFECT */
+        .burst-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+        }
 
-/* header */
+        /* MESSAGE CONTAINER */
+        #celestial-message {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+            padding: 20px;
+            animation: fadeIn 1.5s forwards;
+        }
 
-header{
-text-align:center;
-margin-bottom:40px;
-z-index:2;
-}
+        .trait-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
 
-header h1{
-letter-spacing:5px;
-color:var(--gold);
-font-size:1.6rem;
-}
+        .trait {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 8px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.05);
+            color: var(--accent-pink);
+        }
 
-header p{
-opacity:.6;
-font-style:italic;
-margin-top:8px;
-}
+        .rhyme-box {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--gold);
+            max-width: 320px;
+        }
 
-/* grid */
+        .uiee-reveal {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-top: 20px;
+            color: white;
+            text-shadow: 0 0 20px var(--gold);
+            animation: bounce 0.6s infinite alternate;
+        }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:18px;
-max-width:600px;
-width:100%;
-z-index:2;
-}
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
-/* card */
-
-.card{
-background:rgba(255,255,255,0.06);
-backdrop-filter:blur(12px);
-border-radius:20px;
-padding:25px 15px;
-text-align:center;
-transition:.4s;
-border:1px solid rgba(255,255,255,0.08);
-box-shadow:0 10px 25px rgba(0,0,0,.6);
-cursor:pointer;
-position:relative;
-overflow:hidden;
-}
-
-/* glow */
-
-.card:hover{
-transform:translateY(-6px);
-box-shadow:0 0 25px rgba(255,77,109,.3);
-border-color:var(--rose);
-}
-
-/* heartbeat glow */
-
-@keyframes heartbeat{
-0%{box-shadow:0 0 0 rgba(255,77,109,.2);}
-50%{box-shadow:0 0 25px rgba(255,77,109,.5);}
-100%{box-shadow:0 0 0 rgba(255,77,109,.2);}
-}
-
-.card.active{
-animation:heartbeat 1.5s infinite;
-}
-
-/* icon */
-
-.icon{
-font-size:40px;
-margin-bottom:10px;
-}
-
-/* title */
-
-.title{
-color:var(--soft);
-letter-spacing:2px;
-font-size:13px;
-margin-bottom:8px;
-}
-
-/* rhyme */
-
-.rhyme{
-font-family:Georgia,serif;
-font-size:14px;
-line-height:1.6;
-opacity:0;
-max-height:0;
-transition:.4s;
-overflow:hidden;
-border-top:1px solid rgba(255,255,255,.1);
-margin-top:0;
-padding-top:0;
-}
-
-.card.active .rhyme,
-.card:hover .rhyme{
-opacity:1;
-max-height:120px;
-margin-top:10px;
-padding-top:10px;
-}
-
-/* sparkle */
-
-.sparkle{
-position:absolute;
-font-size:10px;
-color:var(--gold);
-animation:sparkle 2s infinite;
-}
-
-@keyframes sparkle{
-0%{opacity:0;transform:scale(0)}
-50%{opacity:1;transform:scale(1.5)}
-100%{opacity:0;transform:scale(0)}
-}
-
-/* mobile */
-
-@media(max-width:480px){
-.grid{
-grid-template-columns:1fr;
-}
-}
-
-</style>
+        .mole-dot { width: 5px; height: 5px; background: #000; border-radius: 50%; display: inline-block; margin-left: 4px; border: 1px solid #444; }
+    </style>
 </head>
-
 <body>
 
-<div id="hearts"></div>
+    <div id="canvas-stars"></div>
 
-<header>
-<h1>Your Magic</h1>
-<p>Every little detail of you… drives me crazy</p>
-</header>
+    <div id="star-trigger" onclick="burst()">
+        <span class="star-core">⭐</span>
+        <p style="position: absolute; bottom: -40px; width: 150px; font-size: 0.7rem; opacity: 0.6; letter-spacing: 2px;">TAP THE STAR</p>
+    </div>
 
-<div class="grid">
+    <div id="celestial-message">
+        <div class="trait-cloud">
+            <span class="trait">Your Smile 😊</span>
+            <span class="trait">Those Eyes 👁️</span>
+            <span class="trait">Beautiful ✨</span>
+            <span class="trait">Pure Care 🫂</span>
+            <span class="trait">Adorable 🧸</span>
+            <span class="trait">That Mole <span class="mole-dot"></span></span>
+        </div>
 
-<div class="card" onclick="toggle(this)">
-<div class="icon">😊</div>
-<div class="title">Smile</div>
-<div class="rhyme">
-"When your smile softly appears,<br>
-It melts my doubts, my fears…<br>
-Like sunshine touching skin so light,<br>
-It makes my whole world feel right."
-</div>
-</div>
+        <div class="rhyme-box">
+        
+            System Alert 🚨<br><br>
+        
+            Girlfriend is angry 😡<br>
+            Boyfriend is scared 😭<br><br>
+        
+            Doctor says:<br>
+            "Only solution is hugs + kisses + sorry unlimited times" 💋<br><br>
+        
+            Aaj Mangalwar hai…<br>
+            Tu gussa hai… ye atyachaar hai 😭<br><br>
+        
+            Sach bolu…<br>
+            Duniya ka sabse dangerous moment kya hota hai?<br><br>
+        
+            Jab meri cute si girlfriend gussa ho jaati hai 😶‍🌫️💔<br><br>
+        
+            Aur sabse painful kya hota hai?<br><br>
+        
+            👉 Jab wo mujhe ignore karti hai 🥲<br><br>
+        
+            Please maan jao na…<br>
+            Main sudhar jaunga (thoda sa 🤏) 😌💖
+        </div>
 
-<div class="card" onclick="toggle(this)">
-<div class="icon">👁️</div>
-<div class="title">Eyes</div>
-<div class="rhyme">
-"In your eyes I lose my way,<br>
-A place where I forever stay…<br>
-One look from you, and I confess,<br>
-I’m deeply lost… in your tenderness."
-</div>
-</div>
+        <div class="uiee-reveal">UIEE! ❤️</div>
 
-<div class="card" onclick="toggle(this)">
-<div class="icon">✨</div>
-<div class="title">Beauty</div>
-<div class="rhyme">
-"Not just beauty that meets the eye,<br>
-But something deeper I can’t deny…<br>
-A glow that no words can define,<br>
-A silent magic… that’s only mine."
-</div>
-</div>
+        <p style="margin-top: 40px; font-size: 0.7rem; opacity: 0.4; letter-spacing: 3px;">MY EVERYTHING</p>
+    </div>
 
-<div class="card" onclick="toggle(this)">
-<div class="icon">🤝</div>
-<div class="title">Care</div>
-<div class="rhyme">
-"The way you care, so soft, so true,<br>
-Feels like a world I always knew…<br>
-In your warmth I gently fall,<br>
-Like I’ve finally found it all."
-</div>
-</div>
+    <script>
+        function burst() {
+            const star = document.getElementById('star-trigger');
+            const message = document.getElementById('celestial-message');
+            
+            // Vibration
+            if (window.navigator.vibrate) window.navigator.vibrate([50, 30, 100]);
 
-<div class="card" onclick="toggle(this)">
-<div class="icon">🧸</div>
-<div class="title">Adorable</div>
-<div class="rhyme">
-"Every little thing you do,<br>
-Feels so perfect, feels so you…<br>
-From your laugh to how you stare,<br>
-You’re just too cute… beyond compare."
-</div>
-</div>
+            // Create particle burst effect
+            for (let i = 0; i < 20; i++) {
+                createParticle();
+            }
 
-<div class="card" onclick="toggle(this)">
-<div class="icon">💖</div>
-<div class="title">That Mole</div>
-<div class="rhyme">
-"That tiny mark upon your cheek,<br>
-Makes your beauty softly peak…<br>
-A little detail, yet so divine,<br>
-Like it was placed… just to be mine."
-</div>
-</div>
+            // Hide star, show message
+            star.style.display = 'none';
+            message.style.display = 'flex';
+        }
 
-</div>
+        function createParticle() {
+            const p = document.createElement('div');
+            p.className = 'burst-circle';
+            const size = Math.random() * 10 + 5 + 'px';
+            p.style.width = size;
+            p.style.height = size;
+            p.style.left = '50%';
+            p.style.top = '50%';
+            p.style.background = Math.random() > 0.5 ? '#FFD700' : '#ffffff';
+            
+            document.body.appendChild(p);
 
-<script>
+            const destinationX = (Math.random() - 0.5) * 500;
+            const destinationY = (Math.random() - 0.5) * 500;
 
-function toggle(el){
-const active=document.querySelector('.card.active');
-if(active && active!==el) active.classList.remove('active');
+            p.animate([
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                { transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: 1000 + Math.random() * 1000,
+                easing: 'cubic-bezier(0, .9, .57, 1)',
+                fill: 'forwards'
+            });
 
-el.classList.toggle('active');
+            setTimeout(() => p.remove(), 2000);
+        }
 
-if(navigator.vibrate) navigator.vibrate(20);
-}
-
-/* hearts */
-
-function createHeart(){
-const h=document.createElement("div");
-h.className="heart";
-h.innerHTML="❤️";
-h.style.left=Math.random()*100+"vw";
-h.style.animationDuration=(4+Math.random()*4)+"s";
-document.getElementById("hearts").appendChild(h);
-setTimeout(()=>h.remove(),8000);
-}
-setInterval(createHeart,700);
-
-/* sparkles */
-
-function sparkle(){
-const s=document.createElement("div");
-s.className="sparkle";
-s.innerHTML="✨";
-s.style.left=Math.random()*100+"vw";
-s.style.top=Math.random()*100+"vh";
-document.body.appendChild(s);
-setTimeout(()=>s.remove(),2000);
-}
-setInterval(sparkle,900);
-
-</script>
-
+        // Background Star Generation
+        const bg = document.getElementById('canvas-stars');
+        for (let i = 0; i < 150; i++) {
+            const s = document.createElement('div');
+            s.style.position = 'absolute';
+            s.style.background = 'white';
+            s.style.width = Math.random() * 2 + 'px';
+            s.style.height = s.style.width;
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.opacity = Math.random();
+            s.style.borderRadius = '50%';
+            bg.appendChild(s);
+        }
+    </script>
 </body>
 </html>
