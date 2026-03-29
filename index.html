@@ -3,128 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Good Night ❤️</title>
+<title>Feel Better, My Love</title>
 
 <style>
-
-:root{
---bg1:#0b0c2a;
---bg2:#1a1b4b;
---moon:#ffd700;
---text:#ffffff;
---pink:#ff6b9a;
+:root {
+    --bg: #040407;
+    --rose: #ff8fa3;
+    --gold: #ffd6a5;
+    --soft: #ffe5ec;
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background: radial-gradient(circle at center, #0f0f1a, var(--bg));
+    color: white;
+    font-family: 'Georgia', serif;
+    height: 100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    text-align:center;
 }
 
-body{
-background:linear-gradient(180deg,var(--bg1),var(--bg2));
-color:var(--text);
-font-family:Georgia,serif;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-overflow:hidden;
+/* STARS */
+#stars {
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+.star {
+    position:absolute;
+    background:white;
+    border-radius:50%;
+    opacity:0.4;
 }
 
-/* stars */
-
-#stars{
-position:absolute;
-width:100%;
-height:100%;
-top:0;
-left:0;
+/* MAIN */
+.container {
+    padding:20px;
+    animation: fadeIn 1.5s ease;
 }
 
-.star{
-position:absolute;
-width:2px;
-height:2px;
-background:white;
-border-radius:50%;
-opacity:.7;
-animation:twinkle 2s infinite alternate;
+h1 {
+    font-size:0.8rem;
+    letter-spacing:4px;
+    opacity:0.6;
+    margin-bottom:30px;
 }
 
-@keyframes twinkle{
-from{opacity:.2}
-to{opacity:1}
+/* TOOTH / HEART */
+.magic {
+    font-size:5rem;
+    cursor:pointer;
+    animation: pulse 1.2s infinite alternate;
+    filter: drop-shadow(0 0 20px #ff4d6d);
 }
 
-/* moon */
-
-.moon{
-font-size:60px;
-margin-bottom:15px;
-filter:drop-shadow(0 0 20px var(--moon));
-animation:float 3s infinite ease-in-out;
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
 }
 
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-10px)}
-100%{transform:translateY(0)}
+/* MESSAGE */
+#message {
+    display:none;
+    max-width:320px;
+    animation: fadeIn 1.5s ease forwards;
 }
 
-/* card */
-
-.card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(10px);
-padding:25px 20px;
-border-radius:20px;
-max-width:320px;
-box-shadow:0 10px 30px rgba(0,0,0,.5);
+.text {
+    font-size:1.2rem;
+    line-height:1.8;
+    color: var(--gold);
+    font-style: italic;
 }
 
-/* text */
-
-h1{
-font-size:22px;
-margin-bottom:10px;
-color:var(--moon);
+/* HEART FLOAT */
+.heart {
+    position:absolute;
+    color:var(--rose);
+    font-size:1.2rem;
+    opacity:0.7;
 }
 
-.message{
-font-size:15px;
-line-height:1.7;
-margin-top:10px;
+@keyframes float {
+    from { transform: translateY(0) scale(1); opacity:1; }
+    to { transform: translateY(-200px) scale(1.5); opacity:0; }
 }
 
-/* heart */
-
-.heart{
-font-size:30px;
-margin-top:15px;
-animation:pulse 1.3s infinite;
+/* BUTTON */
+.btn {
+    margin-top:30px;
+    padding:10px 20px;
+    border-radius:30px;
+    border:1px solid var(--rose);
+    background:transparent;
+    color:var(--rose);
+    cursor:pointer;
+    letter-spacing:2px;
+    transition:0.3s;
 }
 
-@keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.2)}
-100%{transform:scale(1)}
+.btn:hover {
+    background:var(--rose);
+    color:white;
+    box-shadow:0 0 15px var(--rose);
 }
 
-/* floating hearts */
-
-.float-heart{
-position:absolute;
-bottom:-20px;
-font-size:14px;
-animation:rise 6s linear forwards;
-}
-
-@keyframes rise{
-0%{transform:translateY(0);opacity:0}
-20%{opacity:1}
-100%{transform:translateY(-110vh);opacity:0}
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity:0; transform:translateY(20px); }
+    to { opacity:1; transform:translateY(0); }
 }
 
 </style>
@@ -134,56 +126,89 @@ animation:rise 6s linear forwards;
 
 <div id="stars"></div>
 
-<div class="card">
-
-<div class="moon">🌙</div>
-
-<h1>Good Night My Love</h1>
-
-<div class="message">
-
-As the night wraps the world in silence,<br>
-I just want you to know…<br><br>
-
-No matter how far or close we are,<br>
-you’re always in my heart 💖<br><br>
-
-Sleep peacefully, dream beautifully,<br>
-and wake up with that cute smile I love 😊<br><br>
-
-Good night… my favorite person 🌙
-
+<div class="container" id="main">
+    <h1>MY FAVORITE PERSON HAVE TOOTH ACHE</h1>
+    
+    <div class="magic" onclick="heal(this)">🦷</div>
+    
+    <p style="margin-top:20px; font-size:0.7rem; opacity:0.5; letter-spacing:2px;">
+        TAP ME GENTLY 💋
+    </p>
 </div>
 
-<div class="heart">❤️</div>
+<div id="message">
+    <div style="font-size:3.5rem; margin-bottom:15px;">💖</div>
 
+    <div class="text">
+        If I could steal this pain from your lips,<br>
+        I would kiss it away slowly… 💋<br><br>
+
+        Every little ache you feel tonight,<br>
+        somehow echoes inside me too…<br><br>
+
+       Rest your smile, don’t feel alone,<br>
+        My heart is where you call your home. ❤️<br>
+    </div>
+
+    <button class="btn" onclick="location.reload()">KISS AGAIN 💋</button>
 </div>
 
 <script>
 
-/* create stars */
-
-for(let i=0;i<80;i++){
-let s=document.createElement("div");
-s.className="star";
-s.style.left=Math.random()*100+"%";
-s.style.top=Math.random()*100+"%";
-s.style.animationDuration=(1+Math.random()*2)+"s";
-document.getElementById("stars").appendChild(s);
+/* STARS */
+const starContainer = document.getElementById('stars');
+for(let i=0;i<120;i++){
+    let s = document.createElement('div');
+    s.className = 'star';
+    s.style.width = Math.random()*2 + 'px';
+    s.style.height = s.style.width;
+    s.style.left = Math.random()*100 + '%';
+    s.style.top = Math.random()*100 + '%';
+    starContainer.appendChild(s);
 }
 
-/* floating hearts */
+/* HEAL FUNCTION */
+function heal(el){
+    el.innerHTML = '💖';
+    el.style.animation = 'none';
+    el.style.filter = 'drop-shadow(0 0 25px #ff8fa3)';
 
-function heart(){
-let h=document.createElement("div");
-h.className="float-heart";
-h.innerHTML="❤️";
-h.style.left=Math.random()*100+"vw";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),6000);
+    if(window.navigator.vibrate) window.navigator.vibrate([100,50,100]);
+
+    /* hearts */
+    for(let i=0;i<15;i++){
+        createHeart();
+    }
+
+    setTimeout(()=>{
+        document.getElementById('main').style.display='none';
+        document.getElementById('message').style.display='block';
+    },800);
 }
 
-setInterval(heart,1000);
+/* HEART EFFECT */
+function createHeart(){
+    let h = document.createElement('div');
+    h.className='heart';
+    h.innerHTML='❤️';
+    h.style.left='50%';
+    h.style.top='50%';
+    document.body.appendChild(h);
+
+    let x = (Math.random()-0.5)*300;
+    let y = -(Math.random()*300);
+
+    h.animate([
+        { transform:'translate(-50%, -50%) scale(0)', opacity:1 },
+        { transform:`translate(${x}px, ${y}px) scale(1.5)`, opacity:0 }
+    ],{
+        duration:1500,
+        easing:'ease-out',
+        fill:'forwards'
+    });
+
+    setTimeout(()=>h.remove(),1500);
+}
 
 </script>
 
