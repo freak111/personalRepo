@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What time is it?</title>
+    <title>Wellness Scan 2.0</title>
     <style>
         :root {
-            --bg: #0d0d0d;
-            --accent: #ff8fa3;
-            --text: #f4e1d2;
-            --gold: #ffd700;
+            --ui-blue: #00f2ff;
+            --ui-pink: #ff0077;
+            --bg-dark: #0a0b10;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--ui-blue);
+            font-family: 'Courier New', Courier, monospace;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -26,184 +25,200 @@
             text-align: center;
         }
 
-        /* --- INITIAL VIEW --- */
-        #question-view {
-            cursor: pointer;
-            transition: all 0.5s ease;
+        /* --- THE EKG HEARTBEAT LINE --- */
+        .ekg-container {
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            height: 100px;
+            opacity: 0.3;
         }
 
-        #question-view h1 {
-            font-size: 2rem;
-            font-weight: 200;
-            letter-spacing: 4px;
-            border: 1px solid var(--accent);
-            padding: 20px 40px;
-            border-radius: 50px;
-            color: var(--accent);
-            animation: glow 2s infinite alternate;
+        .ekg-line {
+            stroke: var(--ui-blue);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: ekgMove 4s linear infinite;
         }
 
-        @keyframes glow {
-            from { box-shadow: 0 0 10px rgba(255, 143, 163, 0.2); }
-            to { box-shadow: 0 0 30px rgba(255, 143, 163, 0.6); }
+        @keyframes ekgMove {
+            to { stroke-dashoffset: 0; }
         }
 
-        /* --- CLOCK VIEW --- */
-        #clock-view {
+        /* --- THE SCANNER INTERFACE --- */
+        #scanner-ui {
+            position: relative;
+            z-index: 10;
+            width: 320px;
+            padding: 20px;
+            border: 2px solid var(--ui-blue);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            background: rgba(0, 242, 255, 0.05);
+            transition: all 0.8s ease;
+        }
+
+        .girl-avatar {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* The Moving Laser Bar */
+        .scan-bar {
+            position: absolute;
+            top: 0;
+            left: -10%;
+            width: 120%;
+            height: 4px;
+            background: var(--ui-blue);
+            box-shadow: 0 0 15px var(--ui-blue);
             display: none;
+            z-index: 15;
+        }
+
+        .scanning .scan-bar {
+            display: block;
+            animation: scanUpDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scanUpDown {
+            0%, 100% { top: 0%; }
+            50% { top: 100%; }
+        }
+
+        /* --- STATUS UPDATES --- */
+        .stats {
+            text-align: left;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .stat-line { margin-bottom: 5px; opacity: 0; }
+        .scanning .stat-line { animation: fadeInStat 0.5s forwards; }
+
+        @keyframes fadeInStat { to { opacity: 1; } }
+
+        /* --- THE FINAL REVEAL (THE DOCTOR'S CONFESSION) --- */
+        #confession-ui {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, #2d1b33 0%, #0a0b10 100%);
+            z-index: 100;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 1.5s ease forwards;
+            justify-content: center;
+            animation: glitchFade 1s forwards;
         }
 
-        .clock-message {
+        .dr-reveal { font-size: 5rem; margin-bottom: 20px; }
+        
+        .rhyme {
             font-family: 'Georgia', serif;
             font-style: italic;
-            font-size: 1.5rem;
-            margin-bottom: 40px;
-            color: var(--accent);
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #ffafcc;
+            max-width: 80%;
+            text-shadow: 0 0 10px rgba(255, 175, 204, 0.5);
         }
 
-        .clock-face {
-            width: 300px;
-            height: 300px;
-            border: 4px solid var(--text);
-            border-radius: 50%;
-            position: relative;
-            background: rgba(255, 255, 255, 0.03);
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-
-        /* The "Numbers" (Miss You) */
-        .hour-text {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: var(--text);
-            padding: 10px;
+        /* --- BUTTON --- */
+        #action-btn {
+            margin-top: 25px;
+            background: transparent;
+            border: 1px solid var(--ui-blue);
+            color: var(--ui-blue);
+            padding: 10px 20px;
+            cursor: pointer;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
         }
 
-        /* Hands */
-        .hand {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom;
-            border-radius: 10px;
-            z-index: 10;
-        }
+        #action-btn:hover { background: var(--ui-blue); color: var(--bg-dark); }
 
-        .hour-hand {
-            width: 6px;
-            height: 60px;
-            background: var(--text);
+        @keyframes glitchFade {
+            0% { opacity: 0; transform: scale(1.2) skew(5deg); }
+            100% { opacity: 1; transform: scale(1) skew(0deg); }
         }
-
-        .min-hand {
-            width: 4px;
-            height: 90px;
-            background: var(--accent);
-        }
-
-        .sec-hand {
-            width: 2px;
-            height: 100px;
-            background: var(--gold);
-        }
-
-        .center-dot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 12px;
-            height: 12px;
-            background: var(--gold);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 11;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
-    <!-- CLICKABLE INITIAL MESSAGE -->
-    <div id="question-view" onclick="revealClock()">
-        <h1>GUESS WHAT TIME IT IS?</h1>
+    <!-- EKG Background -->
+    <div class="ekg-container">
+        <svg width="100%" height="100">
+            <path class="ekg-line" d="M0,50 L50,50 L60,20 L70,80 L80,50 L150,50 L160,10 L180,90 L200,50 L1000,50" />
+        </svg>
     </div>
 
-    <!-- REVEALED CLOCK SECTION -->
-    <div id="clock-view">
-        <h2 class="clock-message">It's "miss you" o'clock again! ❤️</h2>
+    <!-- Scanner Box -->
+    <div id="scanner-ui">
+        <div class="girl-avatar" id="target">
+            👩🏻‍⚕️
+            <div class="scan-bar"></div>
+        </div>
         
-        <div class="clock-face">
-            <div class="center-dot"></div>
-            
-            <!-- Generate "Miss You" around the clock -->
-            <div id="hour-labels"></div>
-
-            <!-- Hands -->
-            <div class="hand hour-hand" id="hour-hand"></div>
-            <div class="hand min-hand" id="min-hand"></div>
-            <div class="hand sec-hand" id="sec-hand"></div>
+        <h3 id="status-title">SYSTEM READY</h3>
+        
+        <div class="stats" id="stats-box">
+            <div class="stat-line" style="animation-delay: 0.5s;">> HEART: FULL OF LOVE</div>
+            <div class="stat-line" style="animation-delay: 1.5s;">> BEAUTY: EXCEEDS LIMITS</div>
+            <div class="stat-line" style="animation-delay: 2.5s;">> MOOD: NEEDS COMFORT</div>
+            <div class="stat-line" style="animation-delay: 3.5s;">> DOCTOR: ANALYZING...</div>
         </div>
 
-        <p style="margin-top: 40px; opacity: 0.4; font-size: 0.8rem; letter-spacing: 2px;">
-            EVERY SECOND, EVERY MINUTE.
-        </p>
+        <button id="action-btn" onclick="startScan()">Begin Wellness Check</button>
+    </div>
+
+    <!-- Final Romantic Page -->
+    <div id="confession-ui">
+        <div class="dr-reveal">👨🏻‍⚕️❤️</div>
+        <div class="rhyme">
+            "I'm not a doctor, I must confess,<br>
+            A simple lover in a doctor's dress.<br><br>
+            I'm just here to make you feel good,<br>
+            And bring you comfort if I could."
+        </div>
+        <button id="action-btn" style="border-color: #ffafcc; color: #ffafcc; margin-top: 50px;" onclick="location.reload()">Return to Clinic</button>
     </div>
 
     <script>
-        // 1. Position the "MISS YOU" text around the circle
-        const labelsContainer = document.getElementById('hour-labels');
-        for (let i = 1; i <= 12; i++) {
-            const el = document.createElement('div');
-            el.className = 'hour-text';
-            el.innerHTML = 'MISS YOU';
-            // Each hour is 30 degrees (360/12)
-            el.style.transform = `rotate(${i * 30}deg)`;
-            labelsContainer.appendChild(el);
-        }
+        function startScan() {
+            const ui = document.getElementById('scanner-ui');
+            const stats = document.getElementById('stats-box');
+            const title = document.getElementById('status-title');
+            const btn = document.getElementById('action-btn');
+            const confession = document.getElementById('confession-ui');
 
-        function revealClock() {
-            document.getElementById('question-view').style.display = 'none';
-            document.getElementById('clock-view').style.display = 'flex';
-            
-            if(window.navigator.vibrate) window.navigator.vibrate([50, 50, 50]);
-            
-            // Start the clock movement
-            startClock();
-        }
+            // 1. Enter Scanning Mode
+            ui.classList.add('scanning');
+            title.innerText = "SCANNING VITAL SIGNS...";
+            btn.style.display = 'none';
+            stats.style.display = 'block';
 
-        function startClock() {
-            const hourHand = document.getElementById('hour-hand');
-            const minHand = document.getElementById('min-hand');
-            const secHand = document.getElementById('sec-hand');
+            if(window.navigator.vibrate) window.navigator.vibrate([100, 50, 100]);
 
-            function update() {
-                const now = new Date();
-                
-                const seconds = now.getSeconds();
-                const secDegrees = (seconds / 60) * 360;
-                secHand.style.transform = `translateX(-50%) rotate(${secDegrees}deg)`;
+            // 2. Wait for scan to "complete"
+            setTimeout(() => {
+                title.innerText = "SCAN COMPLETE - ERROR 404";
+                title.style.color = "#ff0077";
+                ui.style.borderColor = "#ff0077";
+                ui.style.boxShadow = "0 0 30px rgba(255, 0, 119, 0.4)";
+            }, 4500);
 
-                const minutes = now.getMinutes();
-                const minDegrees = (minutes / 60) * 360 + (seconds / 60) * 6;
-                minHand.style.transform = `translateX(-50%) rotate(${minDegrees}deg)`;
-
-                const hours = now.getHours();
-                const hourDegrees = (hours / 12) * 360 + (minutes / 60) * 30;
-                hourHand.style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
-            }
-
-            setInterval(update, 1000);
-            update(); // Initial call
+            // 3. Glitch into the confession
+            setTimeout(() => {
+                confession.style.display = 'flex';
+                if(window.navigator.vibrate) window.navigator.vibrate(200);
+            }, 6000);
         }
     </script>
 </body>
