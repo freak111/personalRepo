@@ -2,21 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wellness Scan 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dekh kar! 🍌</title>
     <style>
         :root {
-            --ui-blue: #00f2ff;
-            --ui-pink: #ff0077;
-            --bg-dark: #0a0b10;
+            --bg-dark: #0a0a0a;
+            --love-red: #ff3366;
+            --banana-yellow: #ffde59;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background-color: var(--bg-dark);
-            color: var(--ui-blue);
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,200 +24,128 @@
             text-align: center;
         }
 
-        /* --- THE EKG HEARTBEAT LINE --- */
-        .ekg-container {
-            position: absolute;
-            top: 20%;
-            width: 100%;
-            height: 100px;
-            opacity: 0.3;
-        }
-
-        .ekg-line {
-            stroke: var(--ui-blue);
-            stroke-width: 2;
-            fill: none;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: ekgMove 4s linear infinite;
-        }
-
-        @keyframes ekgMove {
-            to { stroke-dashoffset: 0; }
-        }
-
-        /* --- THE SCANNER INTERFACE --- */
-        #scanner-ui {
-            position: relative;
+        /* --- SCREEN 1: THE SUSPENSE --- */
+        #screen-1 {
+            transition: opacity 0.5s ease;
             z-index: 10;
-            width: 320px;
-            padding: 20px;
-            border: 2px solid var(--ui-blue);
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
-            background: rgba(0, 242, 255, 0.05);
-            transition: all 0.8s ease;
         }
 
-        .girl-avatar {
-            font-size: 5rem;
+        .banana-emoji {
+            font-size: 110px;
             display: block;
             margin-bottom: 20px;
-            position: relative;
+            filter: drop-shadow(0 0 15px rgba(255, 222, 89, 0.4));
+            animation: floating 3s infinite alternate ease-in-out;
+            cursor: pointer;
         }
 
-        /* The Moving Laser Bar */
-        .scan-bar {
-            position: absolute;
-            top: 0;
-            left: -10%;
-            width: 120%;
-            height: 4px;
-            background: var(--ui-blue);
-            box-shadow: 0 0 15px var(--ui-blue);
-            display: none;
-            z-index: 15;
+        .hindi-text-1 {
+            color: white;
+            font-weight: 300;
+            letter-spacing: 3px;
+            font-size: 1.2rem;
+            text-transform: lowercase;
+            opacity: 0.7;
         }
 
-        .scanning .scan-bar {
-            display: block;
-            animation: scanUpDown 2s ease-in-out infinite;
-        }
-
-        @keyframes scanUpDown {
-            0%, 100% { top: 0%; }
-            50% { top: 100%; }
-        }
-
-        /* --- STATUS UPDATES --- */
-        .stats {
-            text-align: left;
-            font-size: 0.8rem;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .stat-line { margin-bottom: 5px; opacity: 0; }
-        .scanning .stat-line { animation: fadeInStat 0.5s forwards; }
-
-        @keyframes fadeInStat { to { opacity: 1; } }
-
-        /* --- THE FINAL REVEAL (THE DOCTOR'S CONFESSION) --- */
-        #confession-ui {
+        /* --- SCREEN 2: THE FALL --- */
+        #screen-2 {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: radial-gradient(circle, #2d1b33 0%, #0a0b10 100%);
-            z-index: 100;
+            background: radial-gradient(circle, #ff5c8a 0%, #ff3366 100%);
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            animation: glitchFade 1s forwards;
+            align-items: center;
+            z-index: 100;
+            color: white;
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        .dr-reveal { font-size: 5rem; margin-bottom: 20px; }
-        
-        .rhyme {
-            font-family: 'Georgia', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #ffafcc;
-            max-width: 80%;
-            text-shadow: 0 0 10px rgba(255, 175, 204, 0.5);
+        .dil {
+            font-size: 140px;
+            animation: heart-beat 0.8s infinite alternate;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
         }
 
-        /* --- BUTTON --- */
-        #action-btn {
-            margin-top: 25px;
-            background: transparent;
-            border: 1px solid var(--ui-blue);
-            color: var(--ui-blue);
-            padding: 10px 20px;
-            cursor: pointer;
-            text-transform: uppercase;
+        .hindi-text-2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.3;
+            padding: 0 30px;
+            margin-top: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes floating {
+            from { transform: translateY(0) rotate(-5deg); }
+            to { transform: translateY(-25px) rotate(5deg); }
+        }
+
+        @keyframes banana-slip {
+            to { transform: scale(4) rotate(360deg) translate(200px, 200px); opacity: 0; }
+        }
+
+        @keyframes heart-beat {
+            to { transform: scale(1.15); }
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .tap-hint {
+            margin-top: 50px;
+            font-size: 0.7rem;
+            color: var(--banana-yellow);
             letter-spacing: 2px;
-            transition: 0.3s;
+            opacity: 0.5;
+            animation: blink 2s infinite;
         }
 
-        #action-btn:hover { background: var(--ui-blue); color: var(--bg-dark); }
+        @keyframes blink { 0%, 100% { opacity: 0.6; } 50% { opacity: 0.1; } }
 
-        @keyframes glitchFade {
-            0% { opacity: 0; transform: scale(1.2) skew(5deg); }
-            100% { opacity: 1; transform: scale(1) skew(0deg); }
-        }
     </style>
 </head>
 <body>
 
-    <!-- EKG Background -->
-    <div class="ekg-container">
-        <svg width="100%" height="100">
-            <path class="ekg-line" d="M0,50 L50,50 L60,20 L70,80 L80,50 L150,50 L160,10 L180,90 L200,50 L1000,50" />
-        </svg>
+    <div id="screen-1" onclick="triggerSlip()">
+        <span class="banana-emoji" id="kela">🍌</span>
+        <h1 class="hindi-text-1">ye kela ka chilka...</h1>
+        <div class="tap-hint">TOUCH IT</div>
     </div>
 
-    <!-- Scanner Box -->
-    <div id="scanner-ui">
-        <div class="girl-avatar" id="target">
-            👩🏻‍⚕️
-            <div class="scan-bar"></div>
-        </div>
+    <div id="screen-2">
+        <div class="dil">💖</div>
+        <h1 class="hindi-text-2">
+            is par fisal kar<br>mere payar me gir jao
+        </h1>
         
-        <h3 id="status-title">SYSTEM READY</h3>
-        
-        <div class="stats" id="stats-box">
-            <div class="stat-line" style="animation-delay: 0.5s;">> HEART: FULL OF LOVE</div>
-            <div class="stat-line" style="animation-delay: 1.5s;">> BEAUTY: EXCEEDS LIMITS</div>
-            <div class="stat-line" style="animation-delay: 2.5s;">> MOOD: NEEDS COMFORT</div>
-            <div class="stat-line" style="animation-delay: 3.5s;">> DOCTOR: ANALYZING...</div>
-        </div>
-
-        <button id="action-btn" onclick="startScan()">Begin Wellness Check</button>
-    </div>
-
-    <!-- Final Romantic Page -->
-    <div id="confession-ui">
-        <div class="dr-reveal">👨🏻‍⚕️❤️</div>
-        <div class="rhyme">
-            "I'm not a doctor, I must confess,<br>
-            A simple lover in a doctor's dress.<br><br>
-            I'm just here to make you feel good,<br>
-            And bring you comfort if I could."
-        </div>
-        <button id="action-btn" style="border-color: #ffafcc; color: #ffafcc; margin-top: 50px;" onclick="location.reload()">Return to Clinic</button>
+        <button onclick="location.reload()" style="margin-top: 60px; background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 10px 20px; border-radius: 50px; font-size: 0.7rem; cursor: pointer;">PHER SE?</button>
     </div>
 
     <script>
-        function startScan() {
-            const ui = document.getElementById('scanner-ui');
-            const stats = document.getElementById('stats-box');
-            const title = document.getElementById('status-title');
-            const btn = document.getElementById('action-btn');
-            const confession = document.getElementById('confession-ui');
+        function triggerSlip() {
+            const kela = document.getElementById('kela');
+            const s1 = document.getElementById('screen-1');
+            const s2 = document.getElementById('screen-2');
 
-            // 1. Enter Scanning Mode
-            ui.classList.add('scanning');
-            title.innerText = "SCANNING VITAL SIGNS...";
-            btn.style.display = 'none';
-            stats.style.display = 'block';
+            // Haptic vibration
+            if(window.navigator.vibrate) window.navigator.vibrate(50);
 
-            if(window.navigator.vibrate) window.navigator.vibrate([100, 50, 100]);
+            // Banana slips away
+            kela.style.animation = 'banana-slip 0.7s ease-in forwards';
 
-            // 2. Wait for scan to "complete"
+            // Reveal the love screen
             setTimeout(() => {
-                title.innerText = "SCAN COMPLETE - ERROR 404";
-                title.style.color = "#ff0077";
-                ui.style.borderColor = "#ff0077";
-                ui.style.boxShadow = "0 0 30px rgba(255, 0, 119, 0.4)";
-            }, 4500);
-
-            // 3. Glitch into the confession
-            setTimeout(() => {
-                confession.style.display = 'flex';
-                if(window.navigator.vibrate) window.navigator.vibrate(200);
-            }, 6000);
+                s1.style.display = 'none';
+                s2.style.display = 'flex';
+                
+                if(window.navigator.vibrate) window.navigator.vibrate([100, 50, 100]);
+            }, 600);
         }
     </script>
 </body>
