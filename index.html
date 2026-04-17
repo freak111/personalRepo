@@ -3,209 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chocolate Surprise 🍫</title>
+    <title>Minutes vs Seconds</title>
     <style>
         :root {
-            --choc-dark: #3d1d11;
-            --choc-light: #5d2e17;
-            --foil-gold: #d4af37;
-            --bg-cream: #fff9f0;
-            --heart-red: #e63946;
+            --paper: #e0e0e0;
+            --ink: #2b2b2b;
+            --water: #457b9d;
+            --love: #ff4d6d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--bg-cream);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--paper);
+            font-family: 'Georgia', serif;
             height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            cursor: pointer;
+            transition: background-color 1.5s ease;
+        }
+
+        /* --- THE CANVAS --- */
+        #canvas {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
 
-        /* --- SCREEN 1: THE HOOK --- */
-        #intro-screen {
-            transition: opacity 0.6s ease;
-            z-index: 10;
+        /* --- THE DRAWING (Guy) --- */
+        .guy-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            z-index: 5;
+            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .question-text {
-            font-size: 1.6rem;
-            color: var(--choc-dark);
-            margin-bottom: 30px;
-            font-weight: 300;
-            letter-spacing: 1px;
+        .sketch-guy {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--ink);
+            stroke-width: 2;
+            stroke-linecap: round;
+            filter: url(#charcoal); /* Makes it look like a drawing */
+            transition: stroke 1s ease;
         }
 
-        .btn-start {
-            background-color: var(--choc-dark);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(61, 29, 17, 0.3);
+        /* --- TEXT STYLES --- */
+        .quote {
+            position: absolute;
+            width: 80%;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--ink);
+            line-height: 1.6;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #text-1 { bottom: 15%; opacity: 1; }
+        #text-2 { top: 15%; opacity: 0; transform: translateY(20px); }
+
+        /* --- THE WATERLINE --- */
+        .waterline {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40%;
+            background: rgba(69, 123, 157, 0.2);
+            border-top: 2px dashed var(--water);
+            transition: all 1.5s ease;
+            z-index: 1;
+        }
+
+        /* --- THE LOVE BLOOM (Hidden initially) --- */
+        .bloom {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, #fff0f3 0%, var(--love) 100%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        /* --- INTERACTIVE STATES --- */
+        body.is-loved {
+            background-color: #fff0f3;
+        }
+
+        body.is-loved .sketch-guy {
+            stroke: var(--love);
+            filter: drop-shadow(0 0 10px var(--love));
+        }
+
+        body.is-loved .waterline {
+            height: 0;
+            opacity: 0;
+        }
+
+        body.is-loved #text-1 { opacity: 0; transform: translateY(-20px); }
+        body.is-loved #text-2 { opacity: 1; transform: translateY(0); }
+        body.is-loved .bloom { opacity: 1; }
+        body.is-loved .guy-wrapper { transform: translateY(-50px) scale(1.2); }
+
+        /* --- HINT --- */
+        .hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 2px;
+            color: var(--water);
+            animation: pulse 2s infinite;
         }
 
-        /* --- SCREEN 2: THE CHOCOLATE --- */
-        #reveal-screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        /* Realistic Chocolate Bar */
-        .chocolate-bar {
-            position: relative;
-            width: 280px;
-            height: 160px;
-            background: var(--choc-dark);
-            border-radius: 10px;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 8px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            border: 2px solid var(--choc-light);
-            animation: float 3s infinite alternate ease-in-out;
-        }
-
-        /* Chocolate Segments */
-        .segment {
-            background: linear-gradient(145deg, var(--choc-light), var(--choc-dark));
-            border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* The Icing Text Layer */
-        .icing-text {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .love-msg {
-            color: #fffaf0; /* White icing color */
-            font-size: 1.4rem;
-            font-weight: bold;
-            font-family: 'Brush Script MT', cursive; /* To look like handwritten icing */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin: 5px 0;
-        }
-
-        .hearts {
-            color: var(--heart-red);
-            font-size: 2rem;
-            filter: drop-shadow(0 0 5px rgba(230, 57, 70, 0.5));
-        }
-
-        .punchline {
-            font-size: 1.8rem;
-            color: var(--choc-dark);
-            margin-top: 40px;
-            font-weight: 700;
-            padding: 0 20px;
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes float {
-            from { transform: translateY(0) rotate(-1deg); }
-            to { transform: translateY(-15px) rotate(1deg); }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Sparkle effect for the gold foil vibe */
-        .sparkle {
-            position: absolute;
-            width: 5px; height: 5px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
-        }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
     </style>
 </head>
-<body>
+<body onclick="transformLove()">
 
-    <div id="intro-screen">
-        <h1 class="question-text">Cutie zara batana toh...</h1>
-        <button class="btn-start" onclick="showChocolate()">Kya hua?</button>
-    </div>
+    <svg style="display: none;">
+        <filter id="charcoal">
+            <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+        </filter>
+    </svg>
 
-    <div id="reveal-screen">
-        <div class="chocolate-bar" id="choc-bar">
-            <div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
-            <div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
-            
-            <div class="icing-text">
-                <div class="hearts">❤️ ❤️</div>
-                <div class="love-msg">I Love You</div>
-            </div>
+    <div id="canvas">
+        <div class="bloom"></div>
+        
+        <div class="guy-wrapper">
+            <svg class="sketch-guy" viewBox="0 0 100 100">
+                <circle cx="50" cy="30" r="15" />
+                <path d="M50 45 L50 80 M50 50 L30 70 M50 50 L70 70 M50 80 L35 100 M50 80 L65 100" />
+                <path id="choc-heart" d="M50 40 Q50 35 45 35 T40 40 T50 50 T60 40 T55 35 T50 40" fill="none" />
+            </svg>
         </div>
 
-        <h2 class="punchline">yeh konsi chocolate hai?</h2>
+        <p class="quote" id="text-1">it's only take few minutes to drown</p>
+        <p class="quote" id="text-2" style="font-weight: bold; color: #a91d3a;">but only a few seconds to fall madly in a love with you</p>
         
-        <p style="margin-top: 20px; color: #888; font-style: italic;">Hint: The most special one in the world!</p>
-        
-        <button onclick="location.reload()" style="margin-top: 50px; background: none; border: 1px solid #ccc; color: #aaa; padding: 5px 15px; border-radius: 20px; cursor: pointer;">Pucho Pher Se</button>
+        <div class="waterline"></div>
+        <div class="hint" id="hint-text">tap to rescue him</div>
     </div>
 
     <script>
-        function showChocolate() {
-            const s1 = document.getElementById('intro-screen');
-            const s2 = document.getElementById('reveal-screen');
+        let loved = false;
 
-            s1.style.opacity = '0';
+        function transformLove() {
+            if (loved) return;
+            loved = true;
+
+            document.body.classList.add('is-loved');
+            document.getElementById('hint-text').style.opacity = '0';
             
-            if(window.navigator.vibrate) window.navigator.vibrate(60);
-
-            setTimeout(() => {
-                s1.style.display = 'none';
-                s2.style.display = 'flex';
-                addSparkles();
-            }, 600);
-        }
-
-        function addSparkles() {
-            const bar = document.getElementById('choc-bar');
-            for(let i=0; i<12; i++) {
-                const s = document.createElement('div');
-                s.className = 'sparkle';
-                s.style.left = Math.random() * 100 + '%';
-                s.style.top = Math.random() * 100 + '%';
-                bar.appendChild(s);
-
-                s.animate([
-                    { opacity: 0, transform: 'scale(0)' },
-                    { opacity: 1, transform: 'scale(1.5)' },
-                    { opacity: 0, transform: 'scale(0)' }
-                ], {
-                    duration: 1000 + Math.random() * 1000,
-                    iterations: Infinity,
-                    delay: Math.random() * 500
-                });
+            // Haptic feedback
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate([50, 100, 200]);
             }
+
+            // After the transition, make the heart inside the guy red
+            setTimeout(() => {
+                document.getElementById('choc-heart').setAttribute('fill', '#ff4d6d');
+                document.getElementById('choc-heart').setAttribute('stroke', '#ff4d6d');
+            }, 1000);
         }
     </script>
 </body>
