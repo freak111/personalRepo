@@ -2,182 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Minutes vs Seconds</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suno...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --paper: #e0e0e0;
-            --ink: #2b2b2b;
-            --water: #457b9d;
-            --love: #ff4d6d;
+            --bg-color: #333333;
+            --text-main: #ffffff;
+            --accent-red: #ff4d4d;
+            --bear-brown: #8d6e63;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            background-color: var(--paper);
-            font-family: 'Georgia', serif;
+            background-color: var(--bg-color);
+            font-family: 'Quicksand', sans-serif;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 1.5s ease;
         }
 
-        /* --- THE CANVAS --- */
-        #canvas {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .card {
             text-align: center;
-        }
-
-        /* --- THE DRAWING (Guy) --- */
-        .guy-wrapper {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            z-index: 5;
-            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .sketch-guy {
-            width: 100%;
-            height: 100%;
-            fill: none;
-            stroke: var(--ink);
-            stroke-width: 2;
-            stroke-linecap: round;
-            filter: url(#charcoal); /* Makes it look like a drawing */
-            transition: stroke 1s ease;
+            max-width: 400px;
+            padding: 20px;
         }
 
         /* --- TEXT STYLES --- */
-        .quote {
-            position: absolute;
-            width: 80%;
-            font-size: 1.2rem;
-            font-style: italic;
-            color: var(--ink);
-            line-height: 1.6;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        #text-1 { bottom: 15%; opacity: 1; }
-        #text-2 { top: 15%; opacity: 0; transform: translateY(20px); }
-
-        /* --- THE WATERLINE --- */
-        .waterline {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 40%;
-            background: rgba(69, 123, 157, 0.2);
-            border-top: 2px dashed var(--water);
-            transition: all 1.5s ease;
-            z-index: 1;
-        }
-
-        /* --- THE LOVE BLOOM (Hidden initially) --- */
-        .bloom {
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle, #fff0f3 0%, var(--love) 100%);
-            opacity: 0;
-            z-index: 0;
-            transition: opacity 1.5s ease;
-        }
-
-        /* --- INTERACTIVE STATES --- */
-        body.is-loved {
-            background-color: #fff0f3;
-        }
-
-        body.is-loved .sketch-guy {
-            stroke: var(--love);
-            filter: drop-shadow(0 0 10px var(--love));
-        }
-
-        body.is-loved .waterline {
-            height: 0;
-            opacity: 0;
-        }
-
-        body.is-loved #text-1 { opacity: 0; transform: translateY(-20px); }
-        body.is-loved #text-2 { opacity: 1; transform: translateY(0); }
-        body.is-loved .bloom { opacity: 1; }
-        body.is-loved .guy-wrapper { transform: translateY(-50px) scale(1.2); }
-
-        /* --- HINT --- */
-        .hint {
-            position: absolute;
-            bottom: 30px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
+        .header {
+            color: var(--accent-red);
+            font-size: 2.5rem;
+            font-weight: 700;
             letter-spacing: 2px;
-            color: var(--water);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .subheader {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* --- VISUAL ELEMENTS --- */
+        .illustration-container {
+            position: relative;
+            font-size: 120px; /* Base size for emojis */
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bear {
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+        }
+
+        .ladder {
+            position: absolute;
+            font-size: 80px;
+            right: 40px;
+            bottom: -10px;
+            z-index: 1;
+            transform: rotate(5deg);
+            animation: wobble 3s infinite ease-in-out;
+        }
+
+        .like-overlay {
+            position: absolute;
+            z-index: 3;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 5px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.2);
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .footer-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.4;
+            padding: 0 20px;
+        }
 
+        /* --- ANIMATIONS --- */
+        @keyframes wobble {
+            0%, 100% { transform: rotate(5deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 480px) {
+            .header { font-size: 2rem; }
+            .subheader { font-size: 1.2rem; }
+            .footer-text { font-size: 1.3rem; }
+            .illustration-container { font-size: 100px; }
+            .ladder { font-size: 130px; right: 60px; }
+        }
     </style>
 </head>
-<body onclick="transformLove()">
+<body>
 
-    <svg style="display: none;">
-        <filter id="charcoal">
-            <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
-        </filter>
-    </svg>
+    <div class="card">
+        <h1 class="header">"SUNO"</h1>
+        <p class="subheader">apke dil me utarna hai</p>
 
-    <div id="canvas">
-        <div class="bloom"></div>
-        
-        <div class="guy-wrapper">
-            <svg class="sketch-guy" viewBox="0 0 100 100">
-                <circle cx="50" cy="30" r="15" />
-                <path d="M50 45 L50 80 M50 50 L30 70 M50 50 L70 70 M50 80 L35 100 M50 80 L65 100" />
-                <path id="choc-heart" d="M50 40 Q50 35 45 35 T40 40 T50 50 T60 40 T55 35 T50 40" fill="none" />
-            </svg>
+        <div class="illustration-container">
+           
+            <div class="bear">🧸</div>
+            <div class="ladder">🪜</div>
         </div>
 
-        <p class="quote" id="text-1">it's only take few minutes to drown</p>
-        <p class="quote" id="text-2" style="font-weight: bold; color: #a91d3a;">but only a few seconds to fall madly in a love with you</p>
-        
-        <div class="waterline"></div>
-        <div class="hint" id="hint-text">tap to rescue him</div>
+        <p class="footer-text">
+            Sirhi thik hai ke<br>
+            sidha kud jau 🙈
+        </p>
     </div>
 
-    <script>
-        let loved = false;
-
-        function transformLove() {
-            if (loved) return;
-            loved = true;
-
-            document.body.classList.add('is-loved');
-            document.getElementById('hint-text').style.opacity = '0';
-            
-            // Haptic feedback
-            if (window.navigator.vibrate) {
-                window.navigator.vibrate([50, 100, 200]);
-            }
-
-            // After the transition, make the heart inside the guy red
-            setTimeout(() => {
-                document.getElementById('choc-heart').setAttribute('fill', '#ff4d6d');
-                document.getElementById('choc-heart').setAttribute('stroke', '#ff4d6d');
-            }, 1000);
-        }
-    </script>
 </body>
 </html>
